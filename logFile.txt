@@ -1,2 +1,8 @@
 Fri Feb 8 3:30-5:30
 	-initial meeting
+	-all members present: Kevin Dinh, Eric Seals, Eric D, Fan
+	-Discussed which language to use
+
+Mon Feb 11 5PM
+	-Members present: Kevin, Eric S
+	-Worked on learning JavaScript
