@@ -9,7 +9,7 @@
 // var parentElement = document.getElementById('board');
 // parentElement.appendChild(newCanvas);
 
-function board(){
+function setup(){
   createCanvas(200, 200);
   rows = floor(width/w);
   cols = floor(height/w);
