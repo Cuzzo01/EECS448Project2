@@ -1,7 +1,7 @@
 html {
     font-size: 10px;
-    font-family: 'Open Sans', sans-serif;
-    background-color: rgb(218, 218, 218);
+    font-family: "Open Sans", Gadget, sans-serif;
+    background-color: rgb(50, 50, 70);
   }
   
   
@@ -9,8 +9,7 @@ html {
     font-size: 60px;
     text-align: center;
     padding: 20px 0;
-    color: rgb(255, 0, 0);
-    text-shadow: 3px 3px 1px black;
+    color: rgb(255, 255, 255);    
   }
   
   p {
@@ -21,15 +20,18 @@ html {
   }
   
   #board {
-    width: 60px;
+    width: 100px;
     display: block;
-    margin: 0px auto;
+    margin: auto;
+    padding: 30px;
+    
   }
 
   button {
     display: block;
-    background-color: #4CAF50;
-    color: white;
+    background: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(157, 83, 255) 90%);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
     padding: 20px;
     text-align: center;
     font-size: 16px;
