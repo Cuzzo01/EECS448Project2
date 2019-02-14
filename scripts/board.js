@@ -2,12 +2,14 @@ var w = 20
 var gameBoard;
 var rows;
 var cols;
+var cnv;
 function setup(){
     let width = w*Number(document.getElementById("rows").value) 
     let height = w*Number(document.getElementById("cols").value)
     console.log((width,height))
-    createCanvas(width, height)
-    background(255);
+    cnv = createCanvas(width, height)
+    cnv.parent('board')
+    background(255, 0, 200);
     rows = floor(width/w)
     cols = floor(height/w)
     gameBoard = build2DArray(rows, cols)
@@ -17,7 +19,10 @@ function setup(){
         gameBoard[i][j] = new Box(i*w, j*w, w)
         }
     }
+    return(false)
 }
+
+
 
 class Box {
     constructor(x, y, w){
@@ -43,7 +48,7 @@ function build2DArray (rows, cols){
 
 function draw() {
     background(255)
-
+    //cnv.draw()
     for (var i = 0; i<rows; i++) {
         for (var j=0; j<cols; j++) {
             gameBoard[i][j].draw()
