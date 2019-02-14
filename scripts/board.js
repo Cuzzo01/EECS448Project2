@@ -22,8 +22,6 @@ function setup(){
     return(false)
 }
 
-
-
 class Box {
     constructor(x, y, w){
         this.x = x
@@ -47,8 +45,7 @@ function build2DArray (rows, cols){
 }
 
 function draw() {
-    background(255)
-    //cnv.draw()
+    background(500)
     for (var i = 0; i<rows; i++) {
         for (var j=0; j<cols; j++) {
             gameBoard[i][j].draw()
