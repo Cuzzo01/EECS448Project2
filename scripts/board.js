@@ -1,39 +1,52 @@
-// First Board
-// var newCanvas = document.createElement("canvas");
-// newCanvas.id = board.canvasID;
-// newCanvas.width = 100;
-// newCanvas.height = 100;
-// newCanvas.style = "border:1px solid #000000;";
-//
-//
-// var parentElement = document.getElementById('board');
-// parentElement.appendChild(newCanvas);
-
+var w = 20
+var gameBoard;
+var rows;
+var cols;
 function setup(){
-  createCanvas(200, 200);
-  rows = floor(width/w);
-  cols = floor(height/w);
-  gameBoard = build2DArray(rows, cols);
-  for (var i = 0; i < rows; i++) {
-    for (var j = 0; j < cols; j++) {
-      gameBoard[i][j] = new Box(i, j, w);
+    let width = w*Number(document.getElementById("rows").value) 
+    let height = w*Number(document.getElementById("cols").value)
+    console.log((width,height))
+    createCanvas(width, height)
+    background(255);
+    rows = floor(width/w)
+    cols = floor(height/w)
+    gameBoard = build2DArray(rows, cols)
+    console.log(gameBoard)
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+        gameBoard[i][j] = new Box(i*w, j*w, w)
+        }
     }
-  }
-
 }
 
+class Box {
+    constructor(x, y, w){
+        this.x = x
+        this.y = y
+        this.w = w
+    }
 
-function Box (x, y, w){
-  this.x = x;
-  this.y = y;
-  this.w = w;
-
+    draw () {
+        stroke(0)
+        fill(255)
+        rect(this.x,this.y,this.w,this.w)
+    }
 }
 
 function build2DArray (rows, cols){
-  var arr = new Array(rows);
+  var array = new Array(rows);
   for (var i = 0; i < array.length; i++) {
-    array[i] = new Array(cols);
+    array[i] = new Array(cols)
   }
-  return arr;
+  return array
+}
+
+function draw() {
+    background(255)
+
+    for (var i = 0; i<rows; i++) {
+        for (var j=0; j<cols; j++) {
+            gameBoard[i][j].draw()
+        }
+    }
 }
