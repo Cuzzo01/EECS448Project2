@@ -19,11 +19,15 @@ html {
     letter-spacing: 1px;
   }
   
+  input {
+    display: block;
+    margin: 10px auto;
+  }
+
   #board {
-    width: 100px;
     display: block;
     margin: auto;
-    padding: 30px;
+    padding: 50px;
     
   }
 

@@ -2,10 +2,9 @@
 <html>
   <head>
     <meta charset = "UTF-8">
-    <!--Following two lines are included from Fan's Second Commit-->
     <meta name= "viewport" content ="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test Page</title>
+    <title>Minesweeper</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <link href="styles/style.css" rel="stylesheet" type="text/css">
   </head>
@@ -14,14 +13,17 @@
 
     <p>This page is intended to host the Javascript element board.</p>
 
-    <!--This id is appended with the JS Board Element-->
-    <div align="center" id="board"> </div>
+    <form onsubmit = "return setup()">
+        <input type = "number" min = "2" max = "30" id="cols" default="10">
+        <input type = "number" min = "2" max = "30" id="rows" default="10">
 
-    <!--This id is to be appended with the JS Button Element. 
-        This is so that onclick within main.js the board can be reset-->
-    <button>Reset Game </button>
-
-    <!--End call to Board-->
+        <button type="submit">Setup Game</button>
+    </form>
+    
+    <div align = "center" id = "board"></div>
+    
+    <!--End call to JS Scripts-->
+    <script src="libraries/p5.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/board.js"></script>
     
