@@ -5,13 +5,12 @@ var cols;
 var cnv;
 var totalBoom = 10
 function setup(){
-    let width = w*Number(document.getElementById("rows").value)
-    let height = w*Number(document.getElementById("rows").value)
-    cnv = createCanvas(width, height)
+    let size = (w*Number(document.getElementById("rows").value)+1)
+    cnv = createCanvas(size, size)
     cnv.parent('board')
     background(255, 0, 200);
-    rows = floor(width/w)
-    cols = floor(height/w)
+    rows = floor(size/w)
+    cols = floor(size/w)
     gameBoard = build2DArray(rows, cols)
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
