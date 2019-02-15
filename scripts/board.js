@@ -20,8 +20,8 @@ function setup(){
     }
 
     while(totalBoom != 0){
-      var randX = Math.floor(Math.random() * 5)
-      var randY = Math.floor(Math.random() * 5)
+      var randX = Math.floor(Math.random() * rows)
+      var randY = Math.floor(Math.random() * cols)
       if(gameBoard[randX][randY].boom == 0){
         gameBoard[randX][randY].boom = -1
       }
