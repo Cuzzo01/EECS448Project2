@@ -60,7 +60,7 @@ class Box {
       stroke(255)
       if(this.clicked && this.boom == -1){
         fill(100)
-        text("B", this.x+this.w*.5, this.y+this.w*.25)
+        text("B", this.x+this.w*.25, this.y+this.w*.75)
       }
       else if(this.clicked && !this.boom){
         fill(255)
