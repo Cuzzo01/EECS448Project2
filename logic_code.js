@@ -63,3 +63,7 @@ function Display(){
         }
     }
 }
+
+initBoom()
+Display()
+console.log(game)
