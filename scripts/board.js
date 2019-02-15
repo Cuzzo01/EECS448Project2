@@ -21,7 +21,7 @@ function setup(){
         gameBoard[i][j] = new Box(i*w, j*w, w)
         }
     }
-    initBoom()
+    
   
     return(false)
 }
