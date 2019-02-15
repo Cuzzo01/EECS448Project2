@@ -47,3 +47,19 @@ function getCenterCount(x,y){
     }
     return count 
 }
+
+function Display(){
+    for(var i = 0 ; i <size; i++)
+    {
+        for(var j = 0; j <size; j ++ )
+        {
+            var center = game[i][j]
+            if(center === -1)
+            {
+                continue
+            }
+            var centerDisplayNum = getCenterCount(i,j)
+            game[i][j] = centerDisplayNum
+        }
+    }
+}
