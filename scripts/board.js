@@ -14,7 +14,8 @@ function setup(){
     gameBoard = build2DArray(rows, cols)
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
-        gameBoard[i][j] = new Box(i*w, j*w, w)
+          let boom = 0
+        gameBoard[i][j] = new Box(i*w, j*w, w, boom)
         }
     }
 
@@ -26,6 +27,21 @@ function setup(){
       }
       totalBoom--
     }
+   
+      for(var i = 0 ; i <rows; i++)
+      {
+          for(var j = 0; j <cols; j ++ )
+          {
+              var center = gameBoard[i][j].boom
+              if(center == -1)
+              {
+                  continue
+              }
+              var centerDisplayNum = getCenterCount(i,j)
+              gameBoard[i][j].boom = centerDisplayNum
+          }
+      }
+      
 
     return(false)
 }
@@ -47,7 +63,7 @@ function mouseClicked() {
 }
 
 class Box {
-    constructor(x, y, w){
+    constructor(x, y, w, boom ){
         this.x = x
         this.y = y
         this.w = w
@@ -57,12 +73,15 @@ class Box {
 
     draw () {
       stroke(255)
+      text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
+      
       if(this.clicked && this.boom == -1){
         fill(100)
-        text("B", this.x+this.w*.25, this.y+this.w*.75)
+        text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
       }
-      else if(this.clicked && !this.boom){
-        fill(255)
+      else if(this.clicked && this.boom != -1){
+        fill(100)
+        text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
       }
       else {
         fill(100)
@@ -91,4 +110,28 @@ function draw() {
             gameBoard[i][j].draw()
         }
     }
+}
+
+function getCenterCount(x,y){
+  var position = [
+  [x -1, y -1],
+  [x -1, y],
+  [x -1, y +1],
+  [x, y -1],
+  [x, y +1],
+  [x +1, y -1],
+  [x +1, y],
+  [x +1, y +1], 
+  ]
+  var count = 0
+  for (var i =0 ; i< position.length ; i++)
+  {
+      var a = position[i][0]
+      var b = position[i][1]
+      try{
+          count += (gameBoard[a][b].boom == -1)
+      }
+      catch(e){}
+  }
+  return count 
 }
