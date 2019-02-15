@@ -3,7 +3,7 @@ var gameBoard;
 var rows;
 var cols;
 var cnv;
-var boomNum = 10
+
 
 function setup(){
     let width = w*Number(document.getElementById("rows").value)
@@ -17,29 +17,15 @@ function setup(){
     gameBoard = build2DArray(rows, cols)
     console.log(gameBoard)
     for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
-          let boom = 0
-        gameBoard[i][j] = new Box(i*w, j*w, w, boom)
+        for (var j = 0; j < cols; j++) {  
+        gameBoard[i][j] = new Box(i*w, j*w, w)
         }
     }
     initBoom()
   
     return(false)
 }
-function initBoom(){
-  var nowBoomNum = 0
-  var randX
-  var randY
-  while(nowBoomNum < boomNum){
-      randX = parseInt(Math.random()*size)
-      randY = parseInt(Math.random()*size)
-      if(gameBoard[randX][randY].boom == 0){
-          gameBoard[randX][randY].boom = -1
-          nowBoomNum ++
-      }
-  }
- 
-}
+
 
 function mouseClicked() {
   for (var i = 0; i < rows; i++) {
@@ -60,12 +46,12 @@ function mouseClicked() {
 }
 
 class Box {
-    constructor(x, y, w, boom){
+    constructor(x, y, w){
         this.x = x
         this.y = y
         this.w = w
         this.clicked = false
-        this.boom =boom
+      
     }
 
     draw () {
