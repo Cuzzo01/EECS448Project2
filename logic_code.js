@@ -6,7 +6,7 @@ for(var i = 0; i <size; i++)
 {
     game.push(
         Array(size).fill(0)
-    )   
+    )
 }
 
 function initBoom(){
@@ -16,12 +16,11 @@ function initBoom(){
     while(nowBoomNum < boomNum){
         randX = parseInt(Math.random()*size)
         randY = parseInt(Math.random()*size)
-        if(game[randX][randY] === 0){
+        if(game[randX][randY] == 0){
             game[randX][randY] = -1
             nowBoomNum ++
         }
     }
-   
 }
 
 function getCenterCount(x,y){
@@ -33,7 +32,7 @@ function getCenterCount(x,y){
     [x, y +1],
     [x +1, y -1],
     [x +1, y],
-    [x +1, y +1], 
+    [x +1, y +1],
     ]
     var count = 0
     for (var i =0 ; i< position.length ; i++)
@@ -45,7 +44,7 @@ function getCenterCount(x,y){
         }
         catch(e){}
     }
-    return count 
+    return count
 }
 
 function Display(){
