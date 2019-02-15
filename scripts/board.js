@@ -3,7 +3,7 @@ var gameBoard;
 var rows;
 var cols;
 var cnv;
-var totalBoom = 300;
+
 function setup(){
     let width = w*Number(document.getElementById("rows").value)
     let height = w*Number(document.getElementById("cols").value)
@@ -18,18 +18,10 @@ function setup(){
         gameBoard[i][j] = new Box(i*w, j*w, w)
         }
     }
-    while(totalBoom != 0){
-      var randX = Math.floor(Math.random() * rows)
-      var randY = Math.floor(Math.random() * rows)
-      if(gameBoard[randX][randY].boom == 0){
-        gameBoard[randX][randY].boom = -1
-      }
-      totalBoom--
-    }
-
 
     return(false)
 }
+
 
 function mouseClicked() {
   for (var i = 0; i < rows; i++) {
@@ -52,14 +44,14 @@ class Box {
         this.y = y
         this.w = w
         this.clicked = false
-        this.boom = 0
+
     }
 
     draw () {
       stroke(255)
       if(this.clicked && this.boom == -1){
         fill(100)
-        text("B", this.x+this.w*.25, this.y+this.w*.75)
+
       }
       else if(this.clicked && !this.boom){
         fill(255)
