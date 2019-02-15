@@ -8,6 +8,7 @@ for(var i = 0; i <size; i++)
         Array(size).fill(0)
     )   
 }
+
 function initBoom(){
     var nowBoomNum = 0
     var randX
@@ -21,4 +22,28 @@ function initBoom(){
         }
     }
    
+}
+
+function getCenterCount(x,y){
+    var position = [
+    [x -1, y -1],
+    [x -1, y],
+    [x -1, y +1],
+    [x, y -1],
+    [x, y +1],
+    [x +1, y -1],
+    [x +1, y],
+    [x +1, y +1], 
+    ]
+    var count = 0
+    for (var i =0 ; i< position.length ; i++)
+    {
+        var a = position[i][0]
+        var b = position[i][1]
+        try{
+            count += (game[a][b] == -1)
+        }
+        catch(e){}
+    }
+    return count 
 }
