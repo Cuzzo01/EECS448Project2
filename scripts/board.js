@@ -4,7 +4,7 @@ var rows;
 var cols;
 var cnv;
 function setup(){
-    let width = w*Number(document.getElementById("rows").value) 
+    let width = w*Number(document.getElementById("rows").value)
     let height = w*Number(document.getElementById("cols").value)
     console.log((width,height))
     cnv = createCanvas(width, height)
@@ -22,17 +22,41 @@ function setup(){
     return(false)
 }
 
+function mouseClicked() {
+  for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+        var myX = gameBoard[i][j].x
+        var myY = gameBoard[i][j].y
+        if( myX < mouseX)
+          if( myX + w > (mouseX) )
+            if( myY < mouseY)
+              if( myY + w > (mouseY ) ){
+                console.log("Is this working")
+                console.log("This is x coordinate: " + myX)
+                console.log("This is y coordinate: " + myY)
+                gameBoard[i][j].clicked = true
+              }
+    }
+  }
+}
+
 class Box {
     constructor(x, y, w){
         this.x = x
         this.y = y
         this.w = w
+        this.clicked = false
     }
 
     draw () {
-        stroke(0)
+      stroke(0)
+      if(this.clicked){
+        fill(100)
+      }
+      else {
         fill(255)
-        rect(this.x,this.y,this.w,this.w)
+      }
+      rect(this.x,this.y,this.w,this.w)
     }
 }
 
