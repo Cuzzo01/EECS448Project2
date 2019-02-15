@@ -6,7 +6,7 @@ var cnv;
 var totalBoom = 10
 function setup(){
     let width = w*Number(document.getElementById("rows").value)
-    let height = w*Number(document.getElementById("cols").value)
+    let height = w*Number(document.getElementById("rows").value)
     cnv = createCanvas(width, height)
     cnv.parent('board')
     background(255, 0, 200);
@@ -20,8 +20,8 @@ function setup(){
     }
 
     while(totalBoom != 0){
-      var randX = Math.floor(Math.random() * rows)
-      var randY = Math.floor(Math.random() * rows)
+      var randX = Math.floor(Math.random() * 5)
+      var randY = Math.floor(Math.random() * 5)
       if(gameBoard[randX][randY].boom == 0){
         gameBoard[randX][randY].boom = -1
       }
