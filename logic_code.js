@@ -8,5 +8,17 @@ for(var i = 0; i <size; i++)
         Array(size).fill(0)
     )   
 }
-
-
+function initBoom(){
+    var nowBoomNum = 0
+    var randX
+    var randY
+    while(nowBoomNum < boomNum){
+        randX = parseInt(Math.random()*size)
+        randY = parseInt(Math.random()*size)
+        if(game[randX][randY] === 0){
+            game[randX][randY] = -1
+            nowBoomNum ++
+        }
+    }
+   
+}
