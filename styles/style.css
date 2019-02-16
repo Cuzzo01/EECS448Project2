@@ -20,16 +20,30 @@ html {
     color: rgb(255, 255, 255);  
   }
   
+  .border-gradient {
+    border-image-slice: 1;
+    border-width: 2px;
+  }
+  .border-gradient-purple {
+    border-image: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
+  }
+
   input {
+    -webkit-appearance: value;
     display: block;
     margin: 10px auto;
+    background-color: transparent;
+    /*background-color: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);*/
+    color: rgb(255, 186, 226);
+    border-radius: 5px;
+    border-width: 5px;
+    border-image: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
   }
 
   #board {
     display: block;
     margin: auto;
     padding: 50px;
-    /*:rgb(0, 0, 0);*/
   }
 
   button {
