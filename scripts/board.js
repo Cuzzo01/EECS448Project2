@@ -62,7 +62,6 @@ function mouseClicked() {
           if( myX + w > (mouseX) )
             if( myY < mouseY)
               if( myY + w > (mouseY ) ){
-                gameBoard[i][j].clicked = true
                 reveal(i, j)
               }
     }
@@ -110,7 +109,6 @@ class Box {
         this.x = x
         this.y = y
         this.w = w
-        this.clicked = false
         this.boom = 0
         this.revealed = false
     }
