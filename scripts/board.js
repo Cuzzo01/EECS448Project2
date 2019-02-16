@@ -63,7 +63,44 @@ function mouseClicked() {
             if( myY < mouseY)
               if( myY + w > (mouseY ) ){
                 gameBoard[i][j].clicked = true
+                reveal(i, j)
               }
+    }
+  }
+}
+
+function reveal(i, j)
+{
+  if (gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed)
+  {
+    gameBoard[i][j].revealed = true
+    recurseReveal(i, j)
+  }
+  else
+  {
+    gameBoard[i][j].revealed = true
+  }
+}
+
+
+function recurseReveal(curI, curJ)
+{
+  if (gameBoard[curI][curJ].boom == 0)
+  {
+    for (let i = -1; i <= 1; i++)
+    {
+      for (let j = -1; j <= 1; j++)
+      {
+        let newI = curI + i
+        let newJ = curJ + j
+        if (newI >= 0 && newI < rows)
+        {
+          if (newJ >= 0 && newJ < cols)
+          {
+            reveal(newI, newJ)
+          }
+        }
+      }
     }
   }
 }
@@ -75,20 +112,23 @@ class Box {
         this.w = w
         this.clicked = false
         this.boom = 0
+        this.revealed = false
     }
 
     draw () {
       stroke(50, 50, 70)
-      if(this.clicked && this.boom == -1){
+      if(this.revealed && this.boom == -1){
         fill(255, 255, 255)
         stroke(255, 255, 255)
         circle(this.x+10,this.y+10, 3);
         //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
       }
-      else if(this.clicked && this.boom != -1){
+      else if(this.revealed && this.boom != -1){
         fill(216, 186, 255)
         stroke(216, 186, 255)
-        text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
+        if (this.boom > 0) {
+          text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
+        }
       }
       else {
         fill(107, 220, 254)
