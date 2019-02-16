@@ -1,12 +1,16 @@
 var w = 20
-var gameBoard;
-var rows;
-var cols;
-var cnv;
-var totalBoom = 10
+var gameBoard
+var rows
+var cols
+var totalBoom
 function setup(){
-    let size = (w*Number(document.getElementById("rows").value)+1)
-    cnv = createCanvas(size, size)
+    //reset()
+    loop()
+    let size = (w*Number(document.getElementById("input1").value)+1)
+    rows = floor(size/w)
+    cols = floor(size/w)
+    totalBoom = document.getElementById("input2").value
+    let cnv = createCanvas(size, size)
     cnv.parent('board')
     background(255, 0, 200);
     rows = floor(size/w)
@@ -46,6 +50,12 @@ function setup(){
     return(false)
 }
 
+function reset() {
+  gameBoard = []
+  rows = 0
+  cols = 0;
+  totalBoom = 10
+}
 
 function mouseClicked() {
   for (var i = 0; i < rows; i++) {
