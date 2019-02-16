@@ -5,6 +5,8 @@ var cols
 var totalBoom
 var endGameCheck
 var flagPool
+var correctFlags
+var flagGoal
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
@@ -12,6 +14,8 @@ function setup(){
     cols = floor(size/w)
     totalBoom = document.getElementById("input2").value
     flagPool = totalBoom
+    correctFlags = 0
+    flagGoal = totalBoom
     let cnv = createCanvas(size, size)
     //createCanvas(size, size)
     //stroke(0)
@@ -92,17 +96,40 @@ function keyPressed() {
               }
               else if ( gameBoard[i][j].flagged == true ){
                 //If already flagged, take away flag
-                gameBoard[i][j].flagged = false
-                flagPool++
+                unFlagBox(i, j)
               }
 	            else if ( gameBoard[i][j].flagged == false && flagPool > 0){
                 //If not flagged and flags are remaining, add a flag
-                gameBoard[i][j].flagged = true
-                flagPool--
+                flagBox(i, j)
 	            }
             }
     }
   }
+}
+
+function flagBox(i, j)
+{
+  gameBoard[i][j].flagged = true
+  flagPool--
+  if (gameBoard[i][j].boom == -1)
+  {
+    correctFlags++
+    if (correctFlags == flagGoal)
+    {
+      endGameWin()
+    }
+  }
+}
+
+
+function unFlagBox(i, j)
+{
+  if (gameBoard[i][j].boom == -1)
+  {
+    correctFlags--
+  }
+  gameBoard[i][j].flagged = false
+  flagPool++
 }
 
 function reveal(i, j)
@@ -145,7 +172,25 @@ function recurseReveal(curI, curJ)
   }
 }
 
-
+function endGameWin()
+{
+  if (endGameCheck == false)
+  {
+    endGameCheck = true
+    console.log(endGameCheck)
+    for (let i = 0; i < rows; i++)
+    {
+      for (let j = 0; j < cols; j++)
+      {
+        if (!gameBoard[i][j].revealed && !gameBoard[i][j].flagged)
+        {
+          reveal(i, j)
+        }
+      }
+    }
+    setTimeout(function () { alert("Mines successfully swept"); }, 10)
+  }
+}
 
 function endGameLose()
 {
