@@ -18,7 +18,7 @@ function setup(){
         gameBoard[i][j] = new Box(i*w, j*w, w, boom)
         }
     }
-
+    //initBoom
     while(totalBoom != 0){
       var randX = Math.floor(Math.random() * rows)
       var randY = Math.floor(Math.random() * cols)
@@ -27,7 +27,7 @@ function setup(){
       }
       totalBoom--
     }
-   
+    //setup value
       for(var i = 0 ; i <rows; i++)
       {
           for(var j = 0; j <cols; j ++ )
@@ -89,9 +89,6 @@ class Box {
       }
     }
 }
-
-
-
 
 
 
