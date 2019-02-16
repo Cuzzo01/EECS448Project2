@@ -185,12 +185,12 @@ class Box {
       }
       else if (this.flagged){
          fill(107, 220, 254)
-	 triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
+	      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
       }
       else {
         fill(107, 220, 254)
         //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-        rect(this.x,this.y,this.w,this.w,5)
+        rect(this.x,this.y,19,this.w,6)
       }
     }
 }
