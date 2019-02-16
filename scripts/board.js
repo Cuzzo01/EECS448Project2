@@ -4,15 +4,18 @@ var rows
 var cols
 var totalBoom
 function setup(){
-    //reset()
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
     rows = floor(size/w)
     cols = floor(size/w)
     totalBoom = document.getElementById("input2").value
     let cnv = createCanvas(size, size)
+    //createCanvas(size, size)
+    //stroke(0)
+    //background(255, 0, 200)
     cnv.parent('board')
-    background(255, 0, 200);
+    background(0)
+    
     rows = floor(size/w)
     cols = floor(size/w)
     gameBoard = build2DArray(rows, cols)
@@ -50,13 +53,6 @@ function setup(){
     return(false)
 }
 
-function reset() {
-  gameBoard = []
-  rows = 0
-  cols = 0;
-  totalBoom = 10
-}
-
 function mouseClicked() {
   for (var i = 0; i < rows; i++) {
       for (var j = 0; j < cols; j++) {
@@ -82,20 +78,21 @@ class Box {
     }
 
     draw () {
-      stroke(255)
-      text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
-      
+      stroke(50, 50, 70)
       if(this.clicked && this.boom == -1){
-        fill(100)
-        text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
+        fill(255, 255, 255)
+        stroke(255, 255, 255)
+        circle(this.x+10,this.y+10, 3);
+        //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
       }
       else if(this.clicked && this.boom != -1){
-        fill(100)
+        fill(216, 186, 255)
+        stroke(216, 186, 255)
         text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
       }
       else {
-        fill(100)
-        rect(this.x,this.y,this.w,this.w)
+        fill(107, 220, 254)
+        rect(this.x,this.y,this.w,this.w,5)
       }
     }
 }
@@ -111,7 +108,7 @@ function build2DArray (rows, cols){
 }
 
 function draw() {
-    background(500)
+    background(50, 50, 70)
     for (var i = 0; i<rows; i++) {
         for (var j=0; j<cols; j++) {
             gameBoard[i][j].draw()

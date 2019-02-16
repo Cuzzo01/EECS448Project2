@@ -9,7 +9,7 @@ html {
     font-size: 60px;
     text-align: center;
     padding: 20px 0;
-    color: rgb(255, 255, 255);    
+    color: rgb(255, 186, 226);    
   }
   
   p {
@@ -17,6 +17,7 @@ html {
     font-size: 16px;
     line-height: 2;
     letter-spacing: 1px;
+    color: rgb(255, 255, 255);  
   }
   
   input {
@@ -28,12 +29,12 @@ html {
     display: block;
     margin: auto;
     padding: 50px;
-    
+    /*:rgb(0, 0, 0);*/
   }
 
   button {
     display: block;
-    background: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(157, 83, 255) 90%);
+    background: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
     color: rgb(255, 255, 255);
     border-radius: 4px;
     padding: 20px;
