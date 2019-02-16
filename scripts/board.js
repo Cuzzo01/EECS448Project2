@@ -165,7 +165,7 @@ class Box {
         this.w = w
         this.boom = 0
         this.revealed = false
-	this.flagged = false
+	      this.flagged = false
     }
 
     draw () {
