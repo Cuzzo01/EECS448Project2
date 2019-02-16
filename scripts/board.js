@@ -92,6 +92,7 @@ class Box {
       }
       else {
         fill(107, 220, 254)
+        //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
         rect(this.x,this.y,this.w,this.w,5)
       }
     }
