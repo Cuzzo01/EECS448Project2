@@ -4,12 +4,14 @@ var rows
 var cols
 var totalBoom
 var endGameCheck
+var flagPool
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
     rows = floor(size/w)
     cols = floor(size/w)
     totalBoom = document.getElementById("input2").value
+    flagPool = totalBoom
     let cnv = createCanvas(size, size)
     //createCanvas(size, size)
     //stroke(0)
@@ -63,37 +65,44 @@ function mouseClicked() {
           if( myX + w > (mouseX) )
             if( myY < mouseY)
               if( myY + w > (mouseY ) ){
-                reveal(i, j)
+                if (!gameBoard[i][j].flagged && !gameBoard.revealed)
+                {
+                  reveal(i, j)
+                }
               }
     }
   }
 }
 
 function keyPressed() {
-      console.log("testing keypress") 
-      //Determine if mouse is currently on grid
-      for ( var i = 0 ; i < rows ; i++) {
-         for ( var j = 0 ; j < cols ; j++) {
-            var myX = gameBoard[i][j].x
-            var myY = gameBoard[i][j].y
-            if( myX < mouseX )
-               if( myX + w > mouseX )
-                  if( myY < mouseY )
-                     if( myY + w > mouseY ) {
-                     //check if revealed
-		        console.log( "i: " + i + "j: " + j )
-                        if ( gameBoard[i][j].revealed == true ){
-                        //do nothing
-		        }
-                        else if ( gameBoard[i][j].flagged == true ){
-                           gameBoard[i][j].flagged = false
-			}
-			else if ( gameBoard[i][j].flagged == false ){
-			   gameBoard[i][j].flagged = true
-			}
-                     }
-      }
-   }
+  console.log("testing keypress") 
+  //Determine if mouse is currently on grid
+  for ( var i = 0 ; i < rows ; i++) {
+    for ( var j = 0 ; j < cols ; j++) {
+      var myX = gameBoard[i][j].x
+      var myY = gameBoard[i][j].y
+      if( myX < mouseX )
+        if( myX + w > mouseX )
+          if( myY < mouseY )
+            if( myY + w > mouseY ) {
+              //check if revealed
+              console.log( "i: " + i + "j: " + j )
+              if ( gameBoard[i][j].revealed == true ){
+                //do nothing
+              }
+              else if ( gameBoard[i][j].flagged == true ){
+                //If already flagged, take away flag
+                gameBoard[i][j].flagged = false
+                flagPool++
+              }
+	            else if ( gameBoard[i][j].flagged == false && flagPool > 0){
+                //If not flagged and flags are remaining, add a flag
+                gameBoard[i][j].flagged = true
+                flagPool--
+	            }
+            }
+    }
+  }
 }
 
 function reveal(i, j)
@@ -165,7 +174,7 @@ class Box {
         this.w = w
         this.boom = 0
         this.revealed = false
-	this.flagged = false
+	      this.flagged = false
     }
 
     draw () {
