@@ -69,7 +69,32 @@ function mouseClicked() {
   }
 }
 
-
+function keyPressed() {
+      console.log("testing keypress") 
+      //Determine if mouse is currently on grid
+      for ( var i = 0 ; i < rows ; i++) {
+         for ( var j = 0 ; j < cols ; j++) {
+            var myX = gameBoard[i][j].x
+            var myY = gameBoard[i][j].y
+            if( myX < mouseX )
+               if( myX + w > mouseX )
+                  if( myY < mouseY )
+                     if( myY + w > mouseY ) {
+                     //check if revealed
+		        console.log( "i: " + i + "j: " + j )
+                        if ( gameBoard[i][j].revealed == true ){
+                        //do nothing
+		        }
+                        else if ( gameBoard[i][j].flagged == true ){
+                           gameBoard[i][j].flagged = false
+			}
+			else if ( gameBoard[i][j].flagged == false ){
+			   gameBoard[i][j].flagged = true
+			}
+                     }
+      }
+   }
+}
 
 function reveal(i, j)
 {
@@ -140,6 +165,7 @@ class Box {
         this.w = w
         this.boom = 0
         this.revealed = false
+	this.flagged = false
     }
 
     draw () {
@@ -156,6 +182,10 @@ class Box {
         if (this.boom > 0) {
           text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
         }
+      }
+      else if (this.flagged){
+         fill(107, 220, 254)
+	 triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
       }
       else {
         fill(107, 220, 254)
