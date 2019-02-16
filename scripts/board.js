@@ -3,6 +3,7 @@ var gameBoard
 var rows
 var cols
 var totalBoom
+var endGameCheck
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
@@ -15,7 +16,7 @@ function setup(){
     //background(255, 0, 200)
     cnv.parent('board')
     background(0)
-    
+    endGameCheck = false
     rows = floor(size/w)
     cols = floor(size/w)
     gameBoard = build2DArray(rows, cols)
@@ -68,6 +69,8 @@ function mouseClicked() {
   }
 }
 
+
+
 function reveal(i, j)
 {
   if (gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed)
@@ -75,12 +78,16 @@ function reveal(i, j)
     gameBoard[i][j].revealed = true
     recurseReveal(i, j)
   }
+  else if (gameBoard[i][j].boom == -1)
+  {
+    gameBoard[i][j].revealed = true
+    endGameLose()
+  }
   else
   {
     gameBoard[i][j].revealed = true
   }
 }
-
 
 function recurseReveal(curI, curJ)
 {
@@ -101,6 +108,28 @@ function recurseReveal(curI, curJ)
         }
       }
     }
+  }
+}
+
+
+
+function endGameLose()
+{
+  if (endGameCheck == false)
+  {
+    endGameCheck = true
+    console.log(endGameCheck)
+    for (let i = 0; i < rows; i++)
+    {
+      for (let j = 0; j < cols; j++)
+      {
+        if (!gameBoard[i][j].revealed)
+        {
+          reveal(i, j)
+        }
+      }
+    }
+    setTimeout(function () { alert("u r bad"); }, 10)
   }
 }
 
