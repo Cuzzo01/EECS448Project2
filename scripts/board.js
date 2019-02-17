@@ -4,12 +4,18 @@ var rows
 var cols
 var totalBoom
 var endGameCheck
+var flagPool
+var correctFlags
+var flagGoal
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
     rows = floor(size/w)
     cols = floor(size/w)
     totalBoom = document.getElementById("input2").value
+    flagPool = totalBoom
+    correctFlags = 0
+    flagGoal = totalBoom
     let cnv = createCanvas(size, size)
     //createCanvas(size, size)
     //stroke(0)
@@ -32,8 +38,8 @@ function setup(){
       var randY = Math.floor(Math.random() * cols)
       if(gameBoard[randX][randY].boom == 0){
         gameBoard[randX][randY].boom = -1
+        totalBoom--
       }
-      totalBoom--
     }
     //setup value
       for(var i = 0 ; i <rows; i++)
@@ -63,37 +69,67 @@ function mouseClicked() {
           if( myX + w > (mouseX) )
             if( myY < mouseY)
               if( myY + w > (mouseY ) ){
-                reveal(i, j)
+                if (!gameBoard[i][j].flagged && !gameBoard.revealed)
+                {
+                  reveal(i, j)
+                }
               }
     }
   }
 }
 
 function keyPressed() {
-      console.log("testing keypress") 
-      //Determine if mouse is currently on grid
-      for ( var i = 0 ; i < rows ; i++) {
-         for ( var j = 0 ; j < cols ; j++) {
-            var myX = gameBoard[i][j].x
-            var myY = gameBoard[i][j].y
-            if( myX < mouseX )
-               if( myX + w > mouseX )
-                  if( myY < mouseY )
-                     if( myY + w > mouseY ) {
-                     //check if revealed
-		        console.log( "i: " + i + "j: " + j )
-                        if ( gameBoard[i][j].revealed == true ){
-                        //do nothing
-		        }
-                        else if ( gameBoard[i][j].flagged == true ){
-                           gameBoard[i][j].flagged = false
-			}
-			else if ( gameBoard[i][j].flagged == false ){
-			   gameBoard[i][j].flagged = true
-			}
-                     }
-      }
-   }
+  console.log("testing keypress") 
+  //Determine if mouse is currently on grid
+  for ( var i = 0 ; i < rows ; i++) {
+    for ( var j = 0 ; j < cols ; j++) {
+      var myX = gameBoard[i][j].x
+      var myY = gameBoard[i][j].y
+      if( myX < mouseX )
+        if( myX + w > mouseX )
+          if( myY < mouseY )
+            if( myY + w > mouseY ) {
+              //check if revealed
+              console.log( "i: " + i + "j: " + j )
+              if ( gameBoard[i][j].revealed == true ){
+                //do nothing
+              }
+              else if ( gameBoard[i][j].flagged == true ){
+                //If already flagged, take away flag
+                unFlagBox(i, j)
+              }
+	            else if ( gameBoard[i][j].flagged == false && flagPool > 0){
+                //If not flagged and flags are remaining, add a flag
+                flagBox(i, j)
+	            }
+            }
+    }
+  }
+}
+
+function flagBox(i, j)
+{
+  gameBoard[i][j].flagged = true
+  flagPool--
+  if (gameBoard[i][j].boom == -1)
+  {
+    correctFlags++
+    if (correctFlags == flagGoal)
+    {
+      endGameWin()
+    }
+  }
+}
+
+
+function unFlagBox(i, j)
+{
+  if (gameBoard[i][j].boom == -1)
+  {
+    correctFlags--
+  }
+  gameBoard[i][j].flagged = false
+  flagPool++
 }
 
 function reveal(i, j)
@@ -136,7 +172,25 @@ function recurseReveal(curI, curJ)
   }
 }
 
-
+function endGameWin()
+{
+  if (endGameCheck == false)
+  {
+    endGameCheck = true
+    console.log(endGameCheck)
+    for (let i = 0; i < rows; i++)
+    {
+      for (let j = 0; j < cols; j++)
+      {
+        if (!gameBoard[i][j].revealed && !gameBoard[i][j].flagged)
+        {
+          reveal(i, j)
+        }
+      }
+    }
+    setTimeout(function () { alert("Mines successfully swept"); }, 10)
+  }
+}
 
 function endGameLose()
 {
@@ -165,7 +219,7 @@ class Box {
         this.w = w
         this.boom = 0
         this.revealed = false
-	this.flagged = false
+	      this.flagged = false
     }
 
     draw () {
