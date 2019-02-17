@@ -24,20 +24,17 @@ html {
     border-image-slice: 1;
     border-width: 2px;
   }
-  .border-gradient-purple {
-    border-image: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
-  }
+ 
 
   input {
     -webkit-appearance: value;
     display: block;
     margin: 10px auto;
     background-color: transparent;
-    /*background-color: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);*/
     color: rgb(255, 186, 226);
     border-radius: 5px;
     border-width: 5px;
-    border-image: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
+    border-image: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
   }
 
   #board {
@@ -47,7 +44,7 @@ html {
 
   button {
     display: block;
-    background: linear-gradient(45deg, rgb(107, 220, 254) 30%, rgb(255, 186, 226) 90%);
+    background: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
     color: rgb(255, 255, 255);
     border-radius: 4px;
     padding: 20px;
