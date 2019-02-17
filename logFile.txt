@@ -1,12 +1,15 @@
-Fri Feb 8 3:30-5:30
-	-initial meeting
-	-all members present: Kevin Dinh, Eric Seals, Eric D, Fan
+Friday Feb 8 3:30-5:30
+	-Initial meeting
+	-All members present: Kevin Dinh, Eric Seals, Eric D, Fan
 	-Discussed which language to use
 
-Mon Feb 11 5PM
+Monday Feb 11 5:00 
 	-Members present: Kevin, Eric S
 	-Worked on learning JavaScript
 
-Mon Feb 11 11:00
-	-Members present: Fan
-	-first try how html works
+Thursday Feb 14 5:00 - 7:00
+	-Members present: Eric S, Eric D, Evan, Fan
+	-Eric Breifing on p5 basic interface
+	-MouseClicking Registered
+	-Evan Initiation
+	-Fan Pushing Bomb Logic & Evan pushing Revealing Logic
