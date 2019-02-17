@@ -54,5 +54,15 @@ Overall, we're happy with our minimum viable product.
 Is there anything your team could have done differently?
 
 More organization could have been very helpful. It was hard to get the project off the ground, because some functions were dependent on others.
-Although, once everything was put together, and our comfort/capabilities with Javascript grew, we worked out all the kinks rather quickly. There was instant feedback and troubleshooting. 
+Although, once everything was put together, and our comfort/capabilities with Javascript grew, we worked out all the kinks rather quickly. There was instant feedback and troubleshooting.
 With a clear vision of the specific tasks needed to implemented, our ideas were much easier to follow and complete.
+
+Works Cited
+
+Library:
+https://p5js.org/
+
+Documentation:
+http://usejsdoc.org/
+
+Fonts:

@@ -1,3 +1,7 @@
+/** @fileOverview This class creates the game board and functions interacting with it
+  * @author Kevin Dinh, Eric Seals, Eric D. Fan, Evan Trout
+  */
+
 var w = 20
 var gameBoard
 var rows
@@ -8,6 +12,11 @@ var flagPool
 var correctFlags
 var flagGoal
 
+/**Creates a canvas of the game board and displays it onto the webpage
+  *@param rows input from user to create the board
+  *@param totalBoom input from user for how many bombs
+  *@returns game board array
+  */
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)
@@ -16,7 +25,7 @@ function setup(){
     totalBoom = document.getElementById("input2").value
     if(totalBoom > rows*cols -1 )
     {
-      setTimeout(function () { 
+      setTimeout(function () {
           alert("The bombs must be less than size * size -1 "   ); }, 10)
     }
     flagPool = totalBoom
@@ -61,11 +70,14 @@ function setup(){
               gameBoard[i][j].boom = centerDisplayNum
           }
       }
-      
+
 
     return(false)
 }
 
+/** Allows user to press mouse left button to reveal a Box
+  * @function mouseClicked checks to see if mouse is clicked
+  */
 function mouseClicked() {
   for (var i = 0; i < rows; i++) {
       for (var j = 0; j < cols; j++) {
@@ -84,8 +96,12 @@ function mouseClicked() {
   }
 }
 
+/** Allows user to any button to place a flag on the box
+  * @function keyPressed checks to see if key is pressed
+  * @function unFlagBox removes flag
+  * @function flagBox add flag
+  */
 function keyPressed() {
-  console.log("testing keypress") 
   //Determine if mouse is currently on grid
   for ( var i = 0 ; i < rows ; i++) {
     for ( var j = 0 ; j < cols ; j++) {
@@ -113,77 +129,14 @@ function keyPressed() {
   }
 }
 
-function flagBox(i, j)
-{
-  gameBoard[i][j].flagged = true
-  flagPool--
-  if (gameBoard[i][j].boom == -1)
-  {
-    correctFlags++
-    if (correctFlags == flagGoal)
-    {
-      endGameWin()
-    }
-  }
-}
 
-
-function unFlagBox(i, j)
-{
-  if (gameBoard[i][j].boom == -1)
-  {
-    correctFlags--
-  }
-  gameBoard[i][j].flagged = false
-  flagPool++
-}
-
-function reveal(i, j)
-{
-  if (gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed && !gameBoard[i][j].flagged)
-  {
-    gameBoard[i][j].revealed = true
-    recurseReveal(i, j)
-  }
-  else if (gameBoard[i][j].boom == -1 && !gameBoard[i][j].flagged)
-  {
-    gameBoard[i][j].revealed = true
-    endGameLose()
-  }
-  else if (!gameBoard[i][j].flagged)
-  {
-    gameBoard[i][j].revealed = true
-  }
-}
-
-function recurseReveal(curI, curJ)
-{
-  if (gameBoard[curI][curJ].boom == 0)
-  {
-    for (let i = -1; i <= 1; i++)
-    {
-      for (let j = -1; j <= 1; j++)
-      {
-        let newI = curI + i
-        let newJ = curJ + j
-        if (newI >= 0 && newI < rows)
-        {
-          if (newJ >= 0 && newJ < cols)
-          {
-            reveal(newI, newJ)
-          }
-        }
-      }
-    }
-  }
-}
-
+/** Checks the conditions to prompt a win
+  */
 function endGameWin()
 {
   if (endGameCheck == false)
   {
     endGameCheck = true
-    console.log(endGameCheck)
     for (let i = 0; i < rows; i++)
     {
       for (let j = 0; j < cols; j++)
@@ -198,6 +151,8 @@ function endGameWin()
   }
 }
 
+/** Checks the conditions to prompt a loss
+  */
 function endGameLose()
 {
   if (endGameCheck == false)
@@ -218,45 +173,11 @@ function endGameLose()
   }
 }
 
-class Box {
-    constructor(x, y, w, boom ){
-        this.x = x
-        this.y = y
-        this.w = w
-        this.boom = 0
-        this.revealed = false
-	      this.flagged = false
-    }
-
-    draw () {
-      stroke(50, 50, 70)
-      if(this.revealed && this.boom == -1){
-        fill(255, 255, 255)
-        stroke(255, 255, 255)
-        circle(this.x+10,this.y+10, 3);
-        //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
-      }
-      else if(this.revealed && this.boom != -1){
-        fill(216, 186, 255)
-        stroke(216, 186, 255)
-        if (this.boom > 0) {
-          text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-        }
-      }
-      else if (this.flagged){
-         fill(107, 220, 254)
-	      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
-      }
-      else {
-        fill(107, 220, 254)
-        //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-        rect(this.x,this.y,19,this.w,6)
-      }
-    }
-}
-
-
-
+/** Builds a 2D Array
+  * @param rows recieved from user
+  * @param cols revieved from user
+  * @param returns the built array
+  */
 function build2DArray (rows, cols){
   var array = new Array(rows);
   for (var i = 0; i < array.length; i++) {
@@ -265,6 +186,9 @@ function build2DArray (rows, cols){
   return array
 }
 
+/**Presents the visuals in a user friendly away
+  *@function draw creates visuals
+  */
 function draw() {
     background(50, 50, 70)
     for (var i = 0; i<rows; i++) {
@@ -274,6 +198,14 @@ function draw() {
     }
 }
 
+/**Creates the numbers for the logic of the game board
+  * @function getCenterCount checks surrounding boxes for bombs and displays how many near it
+  * @param x row value of array
+  * @param y column value of array
+  * @try adds the number to the board if it exists
+  * @catch does nothing if it doesn't exist
+  * @returns the value
+  */
 function getCenterCount(x,y){
   var position = [
   [x -1, y -1],
@@ -283,7 +215,7 @@ function getCenterCount(x,y){
   [x, y +1],
   [x +1, y -1],
   [x +1, y],
-  [x +1, y +1], 
+  [x +1, y +1],
   ]
   var count = 0
   for (var i =0 ; i< position.length ; i++)
@@ -295,5 +227,5 @@ function getCenterCount(x,y){
       }
       catch(e){}
   }
-  return count 
+  return count
 }
