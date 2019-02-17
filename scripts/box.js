@@ -1,6 +1,6 @@
 /** @fileOverview This class describes boxes and the definitions of their traits
   * @author Kevin Dinh, Eric Seals, Eric D. Fan, Evan Trout
-  * @constructor 
+  * @constructor
   * @property boom boolean to decide if the box is a bomb
   * @property revealed boolean to decide if the box has been revealed
   * @property flagged boolean to decided if the box has a flag
@@ -72,8 +72,8 @@ function unFlagBox(i, j)
 }
 
 /**Checks surrounding boxes for bombs and reveals them if they are not
-  * @param i row of gameBoard
-  * @param j column of gameBoard
+  * @param {number} i row of gameBoard
+  * @param {number} j column of gameBoard
   * @function recurseReveal checks surrounding boxes
   * @function endGameLose checks losing condition
   */
@@ -96,8 +96,8 @@ function reveal(i, j)
 }
 
 /**Recursion function to check surrounding boxes for bombs
-  * @param curI row of gameBoard
-  * @param curJ column of gameBoard
+  * @param {number} curI row of gameBoard
+  * @param {number} curJ column of gameBoard
   * @function reveal checks the next bomb in the recursion
   */
 function recurseReveal(curI, curJ)

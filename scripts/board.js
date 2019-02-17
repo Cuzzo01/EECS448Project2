@@ -13,8 +13,11 @@ var correctFlags
 var flagGoal
 
 /**Creates a canvas of the game board and displays it onto the webpage
-  *@param rows input from user to create the board
-  *@param totalBoom input from user for how many bombs
+  *@param {number} rows input from user to create the board
+  *@param {number} totalBoom input from user for how many bombs
+  *@function createCanvas makes a visual friendly layout
+  *@function setTimeout stops runtime of code
+  *@function alert prompts dialogue box
   *@returns game board array
   */
 function setup(){
@@ -174,8 +177,8 @@ function endGameLose()
 }
 
 /** Builds a 2D Array
-  * @param rows recieved from user
-  * @param cols revieved from user
+  * @param {number} rows recieved from user
+  * @param {number} cols recieved from user
   * @param returns the built array
   */
 function build2DArray (rows, cols){
@@ -200,8 +203,8 @@ function draw() {
 
 /**Creates the numbers for the logic of the game board
   * @function getCenterCount checks surrounding boxes for bombs and displays how many near it
-  * @param x row value of array
-  * @param y column value of array
+  * @param {number} x row value of array
+  * @param {number} y column value of array
   * @try adds the number to the board if it exists
   * @catch does nothing if it doesn't exist
   * @returns the value

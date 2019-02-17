@@ -31,6 +31,8 @@ Sunday Feb 17 throughout whole day
 	-Eric D finalizing visuals
 	-Kevin finalizing documentation
 
+Retrospective Write-Up:
+
 How was work split?
 
 Worked was divided into simple tasks, simplifying the list of requirements needed for the game. Eric D worked on visuals and formatting of the website. Fan and Kevin worked on board and box class functions.
@@ -57,7 +59,7 @@ More organization could have been very helpful. It was hard to get the project o
 Although, once everything was put together, and our comfort/capabilities with Javascript grew, we worked out all the kinks rather quickly. There was instant feedback and troubleshooting.
 With a clear vision of the specific tasks needed to implemented, our ideas were much easier to follow and complete.
 
-Works Cited
+Works Cited:
 
 Library:
 https://p5js.org/
