@@ -11,7 +11,19 @@
   <body>
     <h1>Minesweeper</h1>
 
-    <p>This section is for the rules</p>
+    <p>Welcome to test group don't ignore's MineSweeper!</p>
+    <p>Pick a number for your game board size, max:30, and the number of bombs, max:30, that will be placed.</p>
+    <p>Click on Setup Game to get started. </p>
+    <p>Rules:</p>
+    <p>Your objective is to flag all the bombs on your board.</p>
+    <p>You can click on any square to reveal a bomb or number.</p>
+    <p>If, a bomb is revealed you suck and lose the game.</p>
+    <p>If, a number is revealed the number indicates how many possible bombs there are around that square.</p>
+    <p>You must flag all bombs to win the game.</p>
+    <p>Controls:</p>
+    <p>Left mouse button will reveal the current square you are hovering.</p>
+    <p>Spacebar will place/remove a flag on the current square.</p>
+    <p>Good luck and don't suck!</p>
 
     <form onsubmit = "return setup()">
 
@@ -19,15 +31,15 @@
         <input class="border-gradient border-gradient-standard" type = "number" min = "2" max = "" id="input1" value="10">
         <p>Bombs:</p>
         <input class="border-gradient border-gradient-standard" type = "number" min = "1" max = Size*Size-1 id="input2" value="5"><br>
-        
+
         <button type="submit">Setup Game</button>
     </form>
 
     <div align = "center" id = "board"></div>
-    
+
     <!--End call to JS Scripts-->
     <script src="libraries/p5.js"></script>
     <script src="scripts/board.js"></script>
-    
+
   </body>
 </html>
