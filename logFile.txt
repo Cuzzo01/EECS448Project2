@@ -34,7 +34,7 @@ Sunday Feb 17 throughout whole day
 How was work split?
 
 Worked was divided into simple tasks of the game.  Eric D worked on visuals and formatting of the website.  Fan and Kevin worked on board and box class functions.
-Evan worked on the reveal recursion function. Lastly, Sealy worked on button and flag functions.  When everything was put together, we all tested and debugged each others functions.
+Evan worked on the reveal recursion and flagging functions and endgame handling. Lastly, Sealy worked on button and flag functions.  When everything was put together, we all tested and debugged each others functions.
 After, finalizing the game product we worked together on the documentation.
 
 What were challenges and how were the overcome?
