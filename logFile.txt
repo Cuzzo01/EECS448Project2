@@ -33,17 +33,17 @@ Sunday Feb 17 throughout whole day
 
 How was work split?
 
-Worked was divided into simple tasks of the game.  Eric D worked on visuals and formatting of the website.  Fan and Kevin worked on board and box class functions.
-Evan worked on the reveal recursion and flagging functions and endgame handling. Lastly, Sealy worked on button and flag functions.  When everything was put together, we all tested and debugged each others functions.
-After, finalizing the game product we worked together on the documentation.
+Worked was divided into simple tasks, simplifying the list of requirements needed for the game. Eric D worked on visuals and formatting of the website. Fan and Kevin worked on board and box class functions.
+Evan worked on the reveal recursion and flagging functions and endgame handling. Lastly, Sealy worked on button and flag functions. When everything was put together, we all tested and debugged each others functions.
+After obtaining a final, functional, and polished version of Minesweeper, we worked together on the documentation.
 
 What were challenges and how were they overcome?
 
-We struggled in the beginning to even choose a language.  All of us were well versed in C++, but none of us knew a simple solution to implement a GUI for any C++ code.
-Ultimately, we decided on using JavaScript, because it's ease of extensibility with webpages.  We also found a library p5 that was really helpful in implementing drawing and button pressing functionality.
+We struggled in the beginning to even choose a language. All of us were well versed in C++, but none of us knew a simple solution to implement a GUI for any C++ code.
+Ultimately, we decided on using JavaScript, because it's ease of extensibility with webpages. We also found the javascript library, p5, that was really helpful in implementing the drawing and button pressing functionality.
 Since, none of us were really well versed in JavaScript there were many errors in how to implement classes and certain functions.
-With the power of trial and error and pretty helpful websites on JavaScript, they were pretty easy to learn and fix.  Certainly, one of the biggest roadblocks was meeting up.
-It was very difficult for a lot of us to meet together, because of jobs, classes, and weather.  The power of GitHub and Google Hangouts made it easy for us especially in the last few days.
+With the power of trial and error, and all the helpful websites/documentation available on JavaScript, our errors were pretty easy to understand and fix. Certainly, one of the biggest roadblocks was meeting up.
+It was very difficult for a lot of us to meet together, because of jobs, classes, and weather. The power of GitHub and Google Hangouts made it fast and easy for us, especially in the last few days, to push bug fixes and communicate.
 
 Did any features not make the demo?
 
@@ -53,5 +53,6 @@ Overall, we're happy with our minimum viable product.
 
 Is there anything your team could have done differently?
 
-More organization could have been very helpful.  It was hard to get the project off the ground, because some functions were dependent on others.
-Although, once everything was put together we worked out all the kinks rather quickly.  There was instant feedback and troubleshooting.  Ideas were much easier to follow and implement.
+More organization could have been very helpful. It was hard to get the project off the ground, because some functions were dependent on others.
+Although, once everything was put together, and our comfort/capabilities with Javascript grew, we worked out all the kinks rather quickly. There was instant feedback and troubleshooting. 
+With a clear vision of the specific tasks needed to implemented, our ideas were much easier to follow and complete.
