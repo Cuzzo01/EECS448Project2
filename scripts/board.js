@@ -139,17 +139,17 @@ function unFlagBox(i, j)
 
 function reveal(i, j)
 {
-  if (gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed)
+  if (gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed && !gameBoard[i][j].flagged)
   {
     gameBoard[i][j].revealed = true
     recurseReveal(i, j)
   }
-  else if (gameBoard[i][j].boom == -1)
+  else if (gameBoard[i][j].boom == -1 && !gameBoard[i][j].flagged)
   {
     gameBoard[i][j].revealed = true
     endGameLose()
   }
-  else
+  else if (!gameBoard[i][j].flagged)
   {
     gameBoard[i][j].revealed = true
   }
