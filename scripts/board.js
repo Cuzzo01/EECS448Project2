@@ -38,8 +38,8 @@ function setup(){
       var randY = Math.floor(Math.random() * cols)
       if(gameBoard[randX][randY].boom == 0){
         gameBoard[randX][randY].boom = -1
+        totalBoom--
       }
-      totalBoom--
     }
     //setup value
       for(var i = 0 ; i <rows; i++)
