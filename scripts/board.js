@@ -7,6 +7,7 @@ var endGameCheck
 var flagPool
 var correctFlags
 var flagGoal
+
 function setup(){
     loop()
     let size = (w*Number(document.getElementById("input1").value)+1)

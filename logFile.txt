@@ -9,15 +9,15 @@ Monday Feb 11 5:00
 
 Thursday Feb 14 5:00 - 7:00
 	-Members present: Eric S, Eric D, Evan, Fan
-	-Eric Breifing on p5 basic interface
-	-MouseClicking Registered
+	-Eric D Breifing on p5 basic interface
+	-Mouse Clicking Registered
 	-Evan Initiation
 	-Fan Pushing Bomb Logic & Evan pushing Revealing Logic
 
 Friday Feb 15 8AM-10AM
 	-All members via Google Hangouts
-	-Fan, Eric, and Kevin pushing board and bomb logic using p5 interface
-	-Eric cleaning up setup and output of visuals
+	-Fan, Eric S, and Kevin pushing board and bomb logic using p5 interface
+	-Eric D cleaning up setup and output of visuals
 
 Saturday Feb 16 throughout whole day
 	-All members via Google Hangouts
@@ -37,7 +37,7 @@ Worked was divided into simple tasks of the game.  Eric D worked on visuals and 
 Evan worked on the reveal recursion and flagging functions and endgame handling. Lastly, Sealy worked on button and flag functions.  When everything was put together, we all tested and debugged each others functions.
 After, finalizing the game product we worked together on the documentation.
 
-What were challenges and how were the overcome?
+What were challenges and how were they overcome?
 
 We struggled in the beginning to even choose a language.  All of us were well versed in C++, but none of us knew a simple solution to implement a GUI for any C++ code.
 Ultimately, we decided on using JavaScript, because it's ease of extensibility with webpages.  We also found a library p5 that was really helpful in implementing drawing and button pressing functionality.
@@ -48,7 +48,7 @@ It was very difficult for a lot of us to meet together, because of jobs, classes
 Did any features not make the demo?
 
 We met all the basic requirements of the prompt given.
-We briefly talked about implementing a timer to go about and beyond, but we really focused on perfecting our other functions that we ended up not having enough time to implement it.
+We briefly talked about implementing a timer to go above and beyond, but we really focused on perfecting our other functions that we ended up not having enough time to implement it.
 Overall, we're happy with our minimum viable product.
 
 Is there anything your team could have done differently?
