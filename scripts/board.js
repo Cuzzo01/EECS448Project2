@@ -1,5 +1,5 @@
 /** @fileOverview This class creates the game board and functions interacting with it
-  * @author Kevin Dinh, Eric Seals, Eric D. Fan, Evan Trout
+  * @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
   */
 
 var w = 20
