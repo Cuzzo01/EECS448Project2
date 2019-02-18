@@ -28,9 +28,9 @@ function setup(){
     totalBoom = document.getElementById("input2").value
     if(totalBoom >= rows*cols )
     {
+      totalBoom = ((rows*cols)-1)
       setTimeout(function () {
           alert("The bombs must be less than size * size -1 "   ); 10})
-          noloop()
     }
     flagPool = totalBoom
     correctFlags = 0
