@@ -1,32 +1,24 @@
 /** @fileOverview This class creates the game board and functions interacting with it
-* @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
-*/
+ * @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
+ */
 
 /*
-* we have to encapsulate this into a class.. this is all imperative
-*/
+ * we have to encapsulate this into a class.. this is all imperative
+ */
 
-var w = 20
-var gameBoard
-var rows
-var cols
-var totalBoom
-var endGameCheck
-var flagPool
-var correctFlags
-var flagGoal
+var w = 20;
+var gameBoard, rows, cols, mineCount, endGameCheck;
+var cnv, width, height;
 
 /**Creates a canvas of the game board and displays it onto the webpage
-*@param {number} rows input from user to create the board
-*@param {number} totalBoom input from user for how many bombs
-*@function createCanvas makes a visual friendly layout
-*@function setTimeout stops runtime of code
-*@function alert prompts dialogue box
-*@returns game board array
+ *@param {number} rows input from user to create the board
+ *@param {number} totalBoom input from user for how many bombs
+ *@function createCanvas makes a visual friendly layout
+ *@function setTimeout stops runtime of code
+ *@function alert prompts dialogue box
+ *@returns game board array
 */
 function setup() {
-  // why run through the loop before setup???
-  loop()
   /*
    * this bit looks confused. i'd say do something like:
    * var [rows, cols, count] = document.querySelectors("input[type='number']").map( (x) => Number(x) );
@@ -36,63 +28,52 @@ function setup() {
    * 'size' to go to width, height for independent row/col count
    * later try encapsulating the canvas element a bit more for organization.
    */
-  let size = (w*Number(document.getElementById("input1").value)+1)
-  rows = floor(size/w)
-  cols = floor(size/w)
-  totalBoom = document.getElementById("input2").value
-  if( totalBoom >= rows*cols ) {
-    totalBoom = ( (rows * cols) - 1 )
-    setTimeout( function () {
-    alert("The bombs must be less than size * size -1 "   ); 10})
+  var [ rows, cols, mineCount ] = document.getElementsByClassName("setupInput")
+                                          .map( (x) => Number(x) );
+  var [ width, height ] = [ rows * w + 1,
+                            cols * w + 1 ];
+  if( mineCount >= rows * cols ) {
+    mineCount = ( (rows * cols) - 1 );
+    setTimeout( () => alert("The bombs must be less than size * size -1 " ), 10 );
         // the format of the timeout is wrong and there's no actual reason to have a timeout here
         // I assume because it forces your mine count (totalBoom) to the allowed maximum it doesn't
         // abort the setup, so this allows the rest of the board to be setup w/o the message box,
         // which is blocking preventing the rest of the setup function executing
         // however the timeout is wrong and does fire because the end of the line should be:
         //      ..); }, 10);
+        // this should be rendered unnecessary by using the max attribute
   }
-  flagPool = totalBoom
-  correctFlags = 0
-  flagGoal = totalBoom
-  let cnv = createCanvas(size, size)      // p5.js
-  //createCanvas(size, size)              <-- ???
-  //stroke(0)                             
-  //background(255, 0, 200)
-  cnv.parent('board')                     // p5.js
-  background(0)
-  endGameCheck = false
-  rows = floor(size/w)                    // redeclared because fuck it
-  cols = floor(size/w)                    // still very confused
-  gameBoard = build2DArray(rows, cols)
+  var cnv = createCanvas(width, height);  // look at p5.js reference material
+  cnv.parent('board');
+  background(0);
+  endGameCheck = false;
+  gameBoard = build2DArray(rows, cols);
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < cols; j++) {
-      // why not just pass a 0 literal to the Box constructor???
-      let boom = 0
-      gameBoard[i][j] = new Box(i*w, j*w, w, boom)
+      /* later we can avoid needing to pass the width parameter (w) by
+       *    by rendering the boxes in whatever holds the canvas element
+       */
+      gameBoard[i][j] = new Box(i * w, j * w, w, 0);
     }
   }
   //initBoom
-  while( totalBoom != 0 ) {
-    var randX = Math.floor( Math.random() * rows )
-    var randY = Math.floor( Math.random() * cols )
-    if( gameBoard[randX][randY].boom == 0 ) {
-      gameBoard[randX][randY].boom = -1
-      totalBoom--
+  while( mineCount != 0 ) {
+    var randX = Math.floor( Math.random() * rows );
+    var randY = Math.floor( Math.random() * cols );
+    if( gameBoard[randX][randY].boom == 0 ) {     // consider renaming 'boom' to something more descriptive
+      gameBoard[randX][randY].boom = -1;
+      totalBoom--;
     }
   }
   //setup value
   for( var i = 0 ; i < rows; i++ ) {
-    for( var j = 0; j <cols ; j ++ ) {
-      var center = gameBoard[i][j].boom
-      if( center == -1 ) {
-        continue
-      }
-      var centerDisplayNum = getCenterCount( i, j )
-      gameBoard[i][j].boom = centerDisplayNum
+    for( var j = 0; j < cols ; j ++ ) {
+      // should we have 'boom' hold both count and is-a-mine info? it makes sense.
+      gameBoard[i][j].boom = gameBoard[i][j].boom ? -1 : getCenterCount( i, j );
     }
   }
 
-  return(false)         // return is a keyword not a function so the parentheses are unnecessary
+  return false;         // return is a keyword not a function so the parentheses are unnecessary
 }                       // it returns false to prevent the form from sumbitting I think
 
 
@@ -100,20 +81,8 @@ function setup() {
 * @function mouseClicked checks to see if mouse is clicked
 */
 function mouseClicked() {
-  for( var i = 0; i < rows; i++ ) {
-    for( var j = 0; j < cols; j++ ) {
-      var myX = gameBoard[i][j].x
-      var myY = gameBoard[i][j].y
-      if( myX < mouseX)                     // interesting use of single-line if statements...
-        if( myX + w > (mouseX) )
-          if( myY < mouseY)
-            if( myY + w > (mouseY ) ) {
-              if (!gameBoard[i][j].flagged && !gameBoard.revealed) {
-                reveal(i, j)
-              }
-            }
-    }
-  }
+  var [ row, col ] = [ mouseX, mouseY ].map( Math.floor );
+  reveal( row, col );
 }
 
 // ok not exactly digging the keyboard thing?
@@ -125,29 +94,13 @@ function mouseClicked() {
 * @function flagBox add flag
 */
 function keyPressed() {
-  //Determine if mouse is currently on grid
-  for ( var i = 0 ; i < rows ; i++) {
-    for ( var j = 0 ; j < cols ; j++) {
-      var myX = gameBoard[i][j].x
-      var myY = gameBoard[i][j].y
-      if( myX < mouseX )                                  // more nested single line conditionals
-        if( myX + w > mouseX )
-          if( myY < mouseY )
-            if( myY + w > mouseY ) {
-              //check if revealed
-              console.log( "i: " + i + "j: " + j )
-              if ( gameBoard[i][j].revealed == true ) {
-                //do nothing                                        <-- if that does nothing??? 
-              } else if ( gameBoard[i][j].flagged == true ) {
-                //If already flagged, take away flag
-                unFlagBox(i, j)
-              } else if ( gameBoard[i][j].flagged == false && flagPool > 0 ) {
-                //If not flagged and flags are remaining, add a flag
-                flagBox(i, j)
-              }
-            }
-    }
-  }
+  var [ row, col ] = [ mouseX, mouseY ].map( Math.floor );
+  if( gameBoard[row][col].revealed ) { return; }
+  
+  // change unFlagBox and flagBox to just a toggle
+  // because we no longer have a finite supply of flags
+  // we can limit the logic checks necessary for that
+  gameBoard[i][j].flagged ? unFlagBox( row, col ) : flagBox( row, col );
 }
 
 
