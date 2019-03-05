@@ -10,6 +10,14 @@ var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
 var cnv, width, height;
 
+
+function updateInputFields() {
+  var inputs = Array.from(document.getElementsByClassName("setupInput"));
+  var [ rowCounter, colCounter, mineCounter ] = inputs.map( (x) => Number(x) );
+
+  mineCounter.max = String( rowCounter.value * colCounter.value - 1 );
+}
+
 /**Creates a canvas of the game board and displays it onto the webpage
  *@param {number} rows input from user to create the board
  *@param {number} totalBoom input from user for how many bombs
@@ -28,10 +36,12 @@ function setup() {
    * 'size' to go to width, height for independent row/col count
    * later try encapsulating the canvas element a bit more for organization.
    */
-  var [ rows, cols, mineCount ] = document.getElementsByClassName("setupInput")
-                                          .map( (x) => Number(x) );
+  var inputs = Array.from(document.getElementsByClassName("setupInput"));
+  if( inputs.some( (x) => !x.reportValidity() ) ) { return; }
+  var [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );
   var [ width, height ] = [ rows * w + 1,
                             cols * w + 1 ];
+  // user input now verified 
   if( mineCount >= rows * cols ) {
     mineCount = ( (rows * cols) - 1 );
     setTimeout( () => alert("The bombs must be less than size * size -1 " ), 10 );
@@ -62,7 +72,7 @@ function setup() {
     var randY = Math.floor( Math.random() * cols );
     if( gameBoard[randX][randY].boom == 0 ) {     // consider renaming 'boom' to something more descriptive
       gameBoard[randX][randY].boom = -1;
-      totalBoom--;
+      mineCount--;
     }
   }
   //setup value
@@ -72,16 +82,16 @@ function setup() {
       gameBoard[i][j].boom = gameBoard[i][j].boom ? -1 : getCenterCount( i, j );
     }
   }
-
-  return false;         // return is a keyword not a function so the parentheses are unnecessary
-}                       // it returns false to prevent the form from sumbitting I think
-
+}
 
 /** Allows user to press mouse left button to reveal a Box
 * @function mouseClicked checks to see if mouse is clicked
 */
 function mouseClicked() {
-  var [ row, col ] = [ mouseX, mouseY ].map( Math.floor );
+  var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
+  if( row < 0 || row >= rows || col < 0 || col >= cols ) {
+    return; 
+  }
   reveal( row, col );
 }
 
@@ -94,13 +104,14 @@ function mouseClicked() {
 * @function flagBox add flag
 */
 function keyPressed() {
-  var [ row, col ] = [ mouseX, mouseY ].map( Math.floor );
-  if( gameBoard[row][col].revealed ) { return; }
-  
+  var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
+  if( row < 0 || row >= rows || col < 0 || col >= cols ) {
+    return;
+  }
   // change unFlagBox and flagBox to just a toggle
   // because we no longer have a finite supply of flags
   // we can limit the logic checks necessary for that
-  gameBoard[i][j].flagged ? unFlagBox( row, col ) : flagBox( row, col );
+  gameBoard[row][col].flagged ? unFlagBox( row, col ) : flagBox( row, col );
 }
 
 
