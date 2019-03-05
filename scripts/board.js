@@ -13,9 +13,9 @@ var cnv, width, height;
 
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
-  var [ rowCounter, colCounter, mineCounter ] = inputs.map( (x) => Number(x) );
-
-  mineCounter.max = String( rowCounter.value * colCounter.value - 1 );
+  var [ rowCount, colCount, mineCount ] = inputs.map( (x) => Number(x.value) );
+  
+  inputs[2].max = String( rowCount * colCount - 1 );
 }
 
 /**Creates a canvas of the game board and displays it onto the webpage
@@ -27,32 +27,24 @@ function updateInputFields() {
  *@returns game board array
 */
 function setup() {
+  var inputs = Array.from(document.getElementsByClassName("setupInput")); // Input elements
+  if( inputs.some( (x) => !x.reportValidity() ) ) { return; }             // Stop if invalid
+  [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );   // Assign variables
+  [ width, height ] = [ rows * w + 1,                                 // Get width/height in px
+                        cols * w + 1 ];
+  
+  
+  
   /*
-   * this bit looks confused. i'd say do something like:
-   * var [rows, cols, count] = document.querySelectors("input[type='number']").map( (x) => Number(x) );
-   * might want to replace the querySelector with a getElementByClass;
-   *      elements can have multiple classes so it's a convenient way to group them
-   *      and then javascript has destructuring assignment and array mapping.
-   * 'size' to go to width, height for independent row/col count
-   * later try encapsulating the canvas element a bit more for organization.
+   * From p5.js online docs
+   * createCanvas() should be called on line one of setup
+   * and setup is directly called by p5.js which then leads
+   * to putting draw() in a loop. I think we should use
+   * setup() to instantiate the canvas element itself per p5.js
+   * instructions, and move the above input handling code to its own
+   * method. loop() noLoop() can be used to start and stop rendering
+   * and redraw() lets us draw only once when necessary
    */
-  var inputs = Array.from(document.getElementsByClassName("setupInput"));
-  if( inputs.some( (x) => !x.reportValidity() ) ) { return; }
-  var [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );
-  var [ width, height ] = [ rows * w + 1,
-                            cols * w + 1 ];
-  // user input now verified 
-  if( mineCount >= rows * cols ) {
-    mineCount = ( (rows * cols) - 1 );
-    setTimeout( () => alert("The bombs must be less than size * size -1 " ), 10 );
-        // the format of the timeout is wrong and there's no actual reason to have a timeout here
-        // I assume because it forces your mine count (totalBoom) to the allowed maximum it doesn't
-        // abort the setup, so this allows the rest of the board to be setup w/o the message box,
-        // which is blocking preventing the rest of the setup function executing
-        // however the timeout is wrong and does fire because the end of the line should be:
-        //      ..); }, 10);
-        // this should be rendered unnecessary by using the max attribute
-  }
   var cnv = createCanvas(width, height);  // look at p5.js reference material
   cnv.parent('board');
   background(0);
@@ -82,17 +74,23 @@ function setup() {
       gameBoard[i][j].boom = gameBoard[i][j].boom ? -1 : getCenterCount( i, j );
     }
   }
+  draw();
+  noLoop();
 }
 
 /** Allows user to press mouse left button to reveal a Box
 * @function mouseClicked checks to see if mouse is clicked
 */
 function mouseClicked() {
+  // row should be y-related, col x-related. doesn't work that way rn
   var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
   if( row < 0 || row >= rows || col < 0 || col >= cols ) {
     return; 
   }
   reveal( row, col );
+
+  // Call the p5.js renderer to redraw the canvas
+  redraw();
 }
 
 // ok not exactly digging the keyboard thing?
@@ -112,6 +110,9 @@ function keyPressed() {
   // because we no longer have a finite supply of flags
   // we can limit the logic checks necessary for that
   gameBoard[row][col].flagged ? unFlagBox( row, col ) : flagBox( row, col );
+ 
+  // Call the p5.js renderer to redraw the canvas
+  redraw();
 }
 
 

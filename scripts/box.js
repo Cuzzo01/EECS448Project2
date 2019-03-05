@@ -49,23 +49,12 @@ class Box {
 */
 function flagBox(i, j) {
   gameBoard[i][j].flagged = true
-  flagPool--
-  if (gameBoard[i][j].boom == -1) {
-    correctFlags++
-    if(correctFlags == flagGoal) {
-      endGameWin()
-    }
-  }
 }
 
 /**Removes a flag
 */
 function unFlagBox(i, j) {
-  if (gameBoard[i][j].boom == -1) {
-    correctFlags--
-  }
   gameBoard[i][j].flagged = false
-  flagPool++
 }
 
 /**Checks surrounding boxes for bombs and reveals them if they are not
@@ -75,6 +64,7 @@ function unFlagBox(i, j) {
 * @function endGameLose checks losing condition
 */
 function reveal(i, j) {
+  console.log("Reveal called at: " + i + " and " + j + " ; ");
   if( gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
     gameBoard[i][j].revealed = true
     recurseReveal(i, j)
