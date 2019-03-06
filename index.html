@@ -47,9 +47,12 @@
     <form onsubmit = "return setup()">
 
         <p>Size:</p>
-        <input class="border-gradient" type = "number" min = "2" max = "" id="input1" value="10">
+        <p>Rows:</p>
+        <input class="border-gradient" type = "number" min = "2" max = "30" id="Rows" value="10"></input>
+        <p>Columns:</p>
+        <input class="border-gradient" type = "number" min = "2" max = "30" id="Cols" value="10"></input>
         <p>Bombs:</p>
-        <input class="border-gradient" type = "number" min = "1" max = Size*Size-1 id="input2" value="5"><br>
+        <input class="border-gradient" type = "number" min = "1" max = rows*cols-1 id="input2" value="5"><br>
 
         <button type="submit">Setup Game</button>
     </form>

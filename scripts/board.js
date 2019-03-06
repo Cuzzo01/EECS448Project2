@@ -3,6 +3,7 @@
   */
 
 var w = 20
+var h = 20
 var gameBoard
 var rows
 var cols
@@ -22,33 +23,27 @@ var flagGoal
   */
 function setup(){
     loop()
-    let size = (w*Number(document.getElementById("input1").value)+1)
-    rows = floor(size/w)
-    cols = floor(size/w)
+    rows = (document.getElementById("Rows")).value;//removed size, added rows, cols
+    cols = (document.getElementById("Cols")).value;
     totalBoom = document.getElementById("input2").value
     if(totalBoom >= rows*cols )
     {
       totalBoom = ((rows*cols)-1)
       setTimeout(function () {
-          alert("The bombs must be less than size * size -1 "   ); 10})
+          alert("The bombs must be less than (rows * cols) -1 "   ); 10})
     }
     flagPool = totalBoom
     correctFlags = 0
     flagGoal = totalBoom
-    let cnv = createCanvas(size, size)
-    //createCanvas(size, size)
-    //stroke(0)
-    //background(255, 0, 200)
+    let cnv = createCanvas((w*cols+1), (h*rows+1))//added 1 because they added one, seeing what it does --Cameron--
     cnv.parent('board')
     background(0)
     endGameCheck = false
-    rows = floor(size/w)
-    cols = floor(size/w)
-    gameBoard = build2DArray(rows, cols)
-    for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
+    gameBoard = build2DArray(rows, cols);
+    for (let i = 0; i < rows; i++) {//changed these vars to lets --Cameron--
+        for (let j = 0; j < cols; j++) {//changed these vars to lets --Cameron--
           let boom = 0
-        gameBoard[i][j] = new Box(i*w, j*w, w, boom)
+          gameBoard[i][j] = new Box(i*w, j*h, w, boom)
         }
     }
     //initBoom
@@ -61,9 +56,9 @@ function setup(){
       }
     }
     //setup value
-      for(var i = 0 ; i <rows; i++)
+      for(let i = 0 ; i <rows; i++)//changed vars to lets --cameron--
       {
-          for(var j = 0; j <cols; j ++ )
+          for(let j = 0; j <cols; j ++ )//changed vars to lets --cameron--
           {
               var center = gameBoard[i][j].boom
               if(center == -1)
@@ -83,8 +78,8 @@ function setup(){
   * @function mouseClicked checks to see if mouse is clicked
   */
 function mouseClicked() {
-  for (var i = 0; i < rows; i++) {
-      for (var j = 0; j < cols; j++) {
+  for (let i = 0; i < rows; i++) {//changed vars to lets --cameron--
+      for (let j = 0; j < cols; j++) {//changed vars to lets --cameron--
         var myX = gameBoard[i][j].x
         var myY = gameBoard[i][j].y
         if( myX < mouseX)
@@ -107,8 +102,8 @@ function mouseClicked() {
   */
 function keyPressed() {
   //Determine if mouse is currently on grid
-  for ( var i = 0 ; i < rows ; i++) {
-    for ( var j = 0 ; j < cols ; j++) {
+  for ( let i = 0 ; i < rows ; i++) {//changed vars to lets --cameron--
+    for ( let j = 0 ; j < cols ; j++) {//changed vars to lets --cameron--
       var myX = gameBoard[i][j].x
       var myY = gameBoard[i][j].y
       if( myX < mouseX )
@@ -183,11 +178,11 @@ function endGameLose()
   * @param returns the built array
   */
 function build2DArray (rows, cols){
-  var array = new Array(rows);
-  for (var i = 0; i < array.length; i++) {
-    array[i] = new Array(cols)
+  let arr = [];//changed how this array was being initialized --Cameron--
+  for (let i = 0; i < rows; i++) {//changed vars to lets --Cameron--
+    arr.push([]);//changed how a new array is appended to the existing array
   }
-  return array
+  return arr
 }
 
 /**Presents the visuals in a user friendly away
