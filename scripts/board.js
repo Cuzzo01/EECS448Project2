@@ -14,7 +14,7 @@ var cnv, width, height;
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
   var [ rowCount, colCount, mineCount ] = inputs.map( (x) => Number(x.value) );
-  
+
   inputs[2].max = String( rowCount * colCount - 1 );
 }
 
@@ -32,9 +32,9 @@ function setup() {
   [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );   // Assign variables
   [ width, height ] = [ rows * w + 1,                                 // Get width/height in px
                         cols * w + 1 ];
-  
-  
-  
+
+
+
   /*
    * From p5.js online docs
    * createCanvas() should be called on line one of setup
@@ -47,6 +47,7 @@ function setup() {
    */
   var cnv = createCanvas(width, height);  // look at p5.js reference material
   cnv.parent('board');
+  cnv.elt.addEventListener( "contextmenu", (evt) => evt.preventDefault() );
   background(0);
   endGameCheck = false;
   gameBoard = build2DArray(rows, cols);
@@ -79,42 +80,30 @@ function setup() {
 }
 
 /** Allows user to press mouse left button to reveal a Box
-* @function mouseClicked checks to see if mouse is clicked
+* @function mouseReleased is called when the mouseButton has been unclicked
 */
-function mouseClicked() {
+function mouseReleased() {
   // row should be y-related, col x-related. doesn't work that way rn
-  var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
-  if( row < 0 || row >= rows || col < 0 || col >= cols ) {
-    return; 
-  }
-  reveal( row, col );
-
-  // Call the p5.js renderer to redraw the canvas
-  redraw();
-}
-
-// ok not exactly digging the keyboard thing?
-// we don't have to sort through all the spaces, just divide and floor x and y by 20 should do it
-
-/* Allows user to any button to place a flag on the box
-* @function keyPressed checks to see if key is pressed
-* @function unFlagBox removes flag
-* @function flagBox add flag
-*/
-function keyPressed() {
   var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
   if( row < 0 || row >= rows || col < 0 || col >= cols ) {
     return;
   }
-  // change unFlagBox and flagBox to just a toggle
-  // because we no longer have a finite supply of flags
-  // we can limit the logic checks necessary for that
-  gameBoard[row][col].flagged ? unFlagBox( row, col ) : flagBox( row, col );
- 
+  // This switch statement changes controls to use left and right mouse buttons,
+  // no more button pressing
+  switch( mouseButton ) {
+    case LEFT:
+      reveal( row, col );
+      break;
+    case RIGHT:
+      gameBoard[row][col].flagged ? unFlagBox( row, col ) : flagBox( row, col );
+      break;
+    default:
+      break;
+  }
+
   // Call the p5.js renderer to redraw the canvas
   redraw();
 }
-
 
 /** Checks the conditions to prompt a win
 */

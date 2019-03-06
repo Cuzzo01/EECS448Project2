@@ -1,55 +1,61 @@
 html {
-    font-size: 10px;
-    font-family: "Open Sans", Gadget, sans-serif;
-    background-color: rgb(50, 50, 70);
-  }
-  
-  
-  h1 {
-    font-size: 60px;
-    text-align: center;
-    padding: 0px;
-    color: rgb(255, 186, 226);  
-  }
-  
-  p {
-    text-align: center;
-    font-size: 16px;
-    line-height: 2;
-    letter-spacing: 1px;
-    color: rgb(255, 255, 255);  
-  }
+  font-size: 10px;
+  font-family: "Open Sans", Gadget, sans-serif;
+  background-color: rgb(50, 50, 70);
+}
 
-  .border-gradient {
-    border-image-slice: 1;
-    border-width: 2px;
-  }
- 
+h1 {
+  font-size: 60px;
+  text-align: center;
+  padding: 0px;
+  color: rgb(255, 186, 226);
+}
 
-  input {
-    -webkit-appearance: value;
-    display: block;
-    margin: 10px auto;
-    background-color: transparent;
-    color: rgb(255, 186, 226);
-    border-radius: 5px;
-    border-width: 5px;
-    border-image: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
-  }
+p {
+  text-align: center;
+  font-size: 16px;
+  line-height: 2em;
+  letter-spacing: 1px;
+  color: rgb(255, 255, 255);
+}
 
-  #board {
-    display: block;
-    padding: 10px;
-  }
+.border-gradient {
+  border-image-slice: 1;
+  border-width: 2px;
+}
 
-  button {
-    display: block;
-    background: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
-    color: rgb(255, 255, 255);
-    border-radius: 4px;
-    padding: 20px;
-    text-align: center;
-    font-size: 16px;
-    margin: 20px auto;
-  }
-  
+input {
+  -webkit-appearance: value;
+  display: block;
+  margin: 10px auto;
+  background-color: transparent;
+  color: rgb(255, 186, 226);
+  border-radius: 5px;
+  border-width: 5px;
+  border-image: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
+}
+
+label {
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  line-height: 2em;
+  letter-spacing: 1px;
+  color: rgb(255, 255, 255);
+}
+
+#board {
+  display: block;
+  padding: 10px;
+}
+
+button {
+  display: block;
+  background: linear-gradient(35deg, rgb(107, 220, 254) 40%, rgb(255, 186, 226) 90%);
+  color: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  margin: 20px auto;
+}
