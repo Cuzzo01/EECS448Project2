@@ -10,7 +10,6 @@ var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
 var cnv, width, height;
 
-
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
   var [ rowCount, colCount, mineCount ] = inputs.map( (x) => Number(x.value) );
@@ -32,8 +31,6 @@ function setup() {
   [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );   // Assign variables
   [ width, height ] = [ rows * w + 1,                                 // Get width/height in px
                         cols * w + 1 ];
-
-
 
   /*
    * From p5.js online docs
@@ -93,9 +90,10 @@ function mouseReleased() {
   switch( mouseButton ) {
     case LEFT:
       reveal( row, col );
+      checkWinConditions();
       break;
     case RIGHT:
-      gameBoard[row][col].flagged ? unFlagBox( row, col ) : flagBox( row, col );
+      toggleFlag( row, col );
       break;
     default:
       break;
@@ -105,28 +103,38 @@ function mouseReleased() {
   redraw();
 }
 
+function checkWinConditions() {
+  var gameWon = !gameBoard.some( ( row ) => {         // read it as "are there not any tiles such that...
+    row.some( (cell) => {
+      return cell.revealed && ( cell.boom != -1 );    // the tile is revealed and not a bomb
+    })
+  });
+  if( gameWon ) {
+    endGameWin();
+  }
+}
+
 /** Checks the conditions to prompt a win
 */
 function endGameWin() {
   if( endGameCheck == false ) {
-    endGameCheck = true
+    endGameCheck = true;
     for( let i = 0; i < rows; i++ ) {
       for( let j = 0; j < cols; j++ ) {
         if( !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-          reveal( i, j )
+          reveal( i, j );
         }
       }
     }
-    setTimeout( function () { alert("Mines successfully swept"); }, 10 ) // again not sure why this is a timeout?
   }
 }
 
 /** Checks the conditions to prompt a loss
 */
 function endGameLose() {
-  if ( endGameCheck == false ) {                      // could replace with a if( endGameCheck) { return; }
-    endGameCheck = true                               // not sure why we change that exactly?
-    console.log( endGameCheck )
+  if ( endGameCheck == false ) {
+    endGameCheck = true;
+    console.log( endGameCheck );
     for ( let i = 0; i < rows; i++ ) {
       for ( let j = 0; j < cols; j++ ) {
         if ( !gameBoard[i][j].revealed ) {
@@ -134,7 +142,6 @@ function endGameLose() {
         }
       }
     }
-    setTimeout(function () { alert("u r bad"); }, 10)
   }
 }
 
@@ -185,12 +192,11 @@ function getCenterCount( x , y ) {
   ]
   var count = 0
   for(var i = 0 ; i < position.length ; i++) {
-    var a = position[i][0]
-    var b = position[i][1]
-    try {                                        // interesting use of a try-catch block?
-      count += (gameBoard[a][b].boom == -1)      // out of range indices in JS return with type `nothing`
-    }                                            // replace that weird statement w/ just an increment
-    catch(e) {}                                  // general rule, if your catch block does nothing,
-  }                                              // you don't need it?
+    var row = position[i][0]
+    var col = position[i][1]
+    if( gameBoard[ row ] != undefined && gameBoard[ row ][ col ] != undefined ) {
+      count += (gameBoard[ row ][ col ].boom == -1);
+    }
+  }
   return count
 }

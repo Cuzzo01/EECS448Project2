@@ -16,7 +16,7 @@ class Box {
     this.revealed = false
     this.flagged = false
   }
-  
+
   /*  draw() method, so there's a setInterval( ) somewhere that calls this regularly
    *  we don't need a /framerate/ just an update whenever something /happens/
    */
@@ -47,14 +47,8 @@ class Box {
 /**Places a flag to indicate there is a bomb in the box
 *@function endGameWin checks win condition
 */
-function flagBox(i, j) {
-  gameBoard[i][j].flagged = true
-}
-
-/**Removes a flag
-*/
-function unFlagBox(i, j) {
-  gameBoard[i][j].flagged = false
+function toggleFlag(row, col) {
+  gameBoard[row][col].flagged = !gameBoard[row][col].flagged;
 }
 
 /**Checks surrounding boxes for bombs and reveals them if they are not
@@ -63,16 +57,27 @@ function unFlagBox(i, j) {
 * @function recurseReveal checks surrounding boxes
 * @function endGameLose checks losing condition
 */
-function reveal(i, j) {
-  console.log("Reveal called at: " + i + " and " + j + " ; ");
-  if( gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-    gameBoard[i][j].revealed = true
-    recurseReveal(i, j)
-  } else if( gameBoard[i][j].boom == -1 && !gameBoard[i][j].flagged ) {
-    gameBoard[i][j].revealed = true
-    endGameLose()
-  } else if (!gameBoard[i][j].flagged) {
-    gameBoard[i][j].revealed = true
+function reveal(row, col) {
+  // Case: Square is a bomb
+    // If flagged, do we ignore or prompt a lose condition?
+    // Else prompt lose condition.
+  // Case: Square is not a bomb
+  //   Case
+  //
+  if( gameBoard[row][col].revealed ) { return; }
+
+  switch( gameBoard[row][col].boom ) {
+    case -1:
+      gameBoard[row][col].revealed = true;
+      endGameLose();
+      break;
+    case 0:
+      gameBoard[row][col].revealed = true;
+      recurseReveal(row, col);
+      break;
+    default:
+      gameBoard[row][col].revealed = true;
+      break;
   }
 }
 
