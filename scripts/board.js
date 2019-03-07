@@ -104,9 +104,9 @@ function mouseReleased() {
 }
 
 function checkWinConditions() {
-  var gameWon = !gameBoard.some( ( row ) => {         // read it as "are there not any tiles such that...
-    row.some( (cell) => {
-      return cell.revealed && ( cell.boom != -1 );    // the tile is revealed and not a bomb
+  var gameWon = !gameBoard.some( ( row ) => {               // there are no rows such that
+    return row.some( (cell) => {                                  // the row has no cell such that
+      return ( !cell.revealed && ( cell.boom != -1 ) );    // that cell is not revealed and not a bomb
     })
   });
   if( gameWon ) {
@@ -126,6 +126,7 @@ function endGameWin() {
         }
       }
     }
+    alert("Mines successfully swept");  // I removed the timeout. The time out allows the board to finish rerendering the board.
   }
 }
 
@@ -142,6 +143,7 @@ function endGameLose() {
         }
       }
     }
+    alert("You have lost!");
   }
 }
 
