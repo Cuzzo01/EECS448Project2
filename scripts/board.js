@@ -21,11 +21,12 @@ var flagGoal
   *@function alert prompts dialogue box
   *@returns game board array
   */
+
 function setup(){
     loop()
     rows = (document.getElementById("Rows")).value;//removed size, added rows, cols
     cols = (document.getElementById("Cols")).value;
-    totalBoom = document.getElementById("input2").value
+    totalBoom = document.getElementById("input2").value;
     if(totalBoom >= rows*cols )
     {
       totalBoom = ((rows*cols)-1)
@@ -35,7 +36,7 @@ function setup(){
     flagPool = totalBoom
     correctFlags = 0
     flagGoal = totalBoom
-    let cnv = createCanvas((w*cols+1), (h*rows+1))//added 1 because they added one, seeing what it does --Cameron--
+    let cnv = createCanvas((w*cols),(h*rows))
     cnv.parent('board')
     background(0)
     endGameCheck = false
@@ -43,7 +44,7 @@ function setup(){
     for (let i = 0; i < rows; i++) {//changed these vars to lets --Cameron--
         for (let j = 0; j < cols; j++) {//changed these vars to lets --Cameron--
           let boom = 0
-          gameBoard[i][j] = new Box(i*w, j*h, w, boom)
+          gameBoard[i][j] = new Box(j*w, i*h, w, boom);
         }
     }
     //initBoom
@@ -58,7 +59,7 @@ function setup(){
     //setup value
       for(let i = 0 ; i <rows; i++)//changed vars to lets --cameron--
       {
-          for(let j = 0; j <cols; j ++ )//changed vars to lets --cameron--
+          for(let j = 0; j <cols; j++ )//changed vars to lets --cameron--
           {
               var center = gameBoard[i][j].boom
               if(center == -1)
@@ -180,19 +181,26 @@ function endGameLose()
 function build2DArray (rows, cols){
   let arr = [];//changed how this array was being initialized --Cameron--
   for (let i = 0; i < rows; i++) {//changed vars to lets --Cameron--
-    arr.push([]);//changed how a new array is appended to the existing array
+    arr.push([]);//changed how a new column is added at the row index --Cameron--
   }
-  return arr
+  return arr;
 }
 
 /**Presents the visuals in a user friendly away
   *@function draw creates visuals
   */
+
+function setBackground() { //created separate function for this so that draw()
+  background(0, 0, 0);   //doesnt loop unnecessarily --Cameron--
+}
+
 function draw() {
-    background(50, 50, 70)
-    for (var i = 0; i<rows; i++) {
-        for (var j=0; j<cols; j++) {
-            gameBoard[i][j].draw()
+    background(50, 50, 70);
+    for (let i = 0; i<rows; i++) {
+        for (let j=0; j<cols; j++) {
+            gameBoard[i][j];//.draw();
+            setBackground();
+            console.log("test");
         }
     }
 }

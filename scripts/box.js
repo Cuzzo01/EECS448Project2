@@ -7,39 +7,38 @@
   */
 class Box {
     constructor(x, y, w, boom ){
-        this.x = x
-        this.y = y
-        this.w = w
-        this.boom = 0
-        this.revealed = false
-	      this.flagged = false
-    }
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.boom = 0;
+        this.revealed = false;
+	      this.flagged = false;
+      }
 
-    draw () {
-      stroke(50, 50, 70)
+      draw();
+      stroke(50, 50, 70);
       if(this.revealed && this.boom == -1){
-        fill(255, 255, 255)
-        stroke(255, 255, 255)
+        fill(255, 255, 255);
+        stroke(255, 255, 255);
         circle(this.x+10,this.y+10, 3);
         //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
       }
       else if(this.revealed && this.boom != -1){
-        fill(216, 186, 255)
-        stroke(216, 186, 255)
+        fill(216, 186, 255);
+        stroke(216, 186, 255);
         if (this.boom > 0) {
-          text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
+          text(this.boom,this.x+this.w*.25, this.y+this.w*.75);
         }
       }
       else if (this.flagged){
-         fill(107, 220, 254)
-	      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
+         fill(107, 220, 254);
+	      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15);
       }
       else {
-        fill(107, 220, 254)
+        fill(107, 220, 254);
         //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-        rect(this.x,this.y,19,this.w,6)
+        rect(this.x,this.y,19,this.w,6);//this reads rect(xVal,yVal, width, height, radius)
       }
-    }
 }
 
 /**Places a flag to indicate there is a bomb in the box
