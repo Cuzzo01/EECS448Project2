@@ -8,42 +8,61 @@
 
 // only the draw function is internal to the Box
 class Box {
-  constructor(x, y, w, boom) {
-    this.x = x
-    this.y = y
+  constructor(i, j, w, boom) {
+    this.div = document.createElement('div');
+    this.div.classList.add('box');
+    this.div.style.gridArea = [(i+1).toString(),(j+1).toString(), 'span 1', 'span 1'].join(' / ') ;
+    this.div.setAttribute('onclick','mouseReleased('+i+','+j+')');
+    this.i = i;
+    this.j = j;
     this.w = w
     this.boom = 0
     this.revealed = false
     this.flagged = false
   }
-  
-  /*  draw() method, so there's a setInterval( ) somewhere that calls this regularly
-   *  we don't need a /framerate/ just an update whenever something /happens/
-   */
-  draw () {
-    stroke(50, 50, 70)
-    if(this.revealed && this.boom == -1) {
-      fill(255, 255, 255)
-      stroke(255, 255, 255)
-      circle(this.x+10,this.y+10, 3);
-      //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
-    } else if(this.revealed && this.boom != -1) {
-      fill(216, 186, 255)
-      stroke(216, 186, 255)
-      if (this.boom > 0) {
-        text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
+
+
+  attach(board) {
+    board.appendChild(this.div);
+  }
+
+  /**Checks surrounding boxes for bombs and reveals them if they are not
+  * @param {number} i row of gameBoard
+  * @param {number} j column of gameBoard
+  * @function recurseReveal checks surrounding boxes
+  * @function endGameLose checks losing condition
+  */
+  reveal() {
+    console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
+    this.revealed = true;
+    this.div.innerHTML = this.boom;
+    if( this.boom == 0 && !this.flagged ) {
+      this.recurseReveal();
+    } else if( this.boom == -1 && !this.flagged ) {
+      endGameLose();
+    }
+
+  }
+  /**Recursion function to check surrounding boxes for bombs
+  * @param {number} curI row of gameBoard
+  * @param {number} curJ column of gameBoard
+  * @function reveal checks the next bomb in the recursion
+  */
+  recurseReveal() {
+    for( let i = -1; i <= 1; i++ ) {
+      for( let j = -1; j <= 1; j++ ) {
+        let newI = this.i + i
+        let newJ = this.j + j
+        if (newI >= 0 && newI < gameBoard.length) {
+          if (newJ >= 0 && newJ < gameBoard[newI].length) {
+            if(!gameBoard[newI][newJ].revealed)
+              gameBoard[newI][newJ].reveal();
+          }
+        }
       }
-    } else if (this.flagged) {
-      fill(107, 220, 254)
-      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
-    } else {
-      fill(107, 220, 254)
-      //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-      rect(this.x,this.y,19,this.w,6)
     }
   }
 }
-
 /**Places a flag to indicate there is a bomb in the box
 *@function endGameWin checks win condition
 */
@@ -55,44 +74,4 @@ function flagBox(i, j) {
 */
 function unFlagBox(i, j) {
   gameBoard[i][j].flagged = false
-}
-
-/**Checks surrounding boxes for bombs and reveals them if they are not
-* @param {number} i row of gameBoard
-* @param {number} j column of gameBoard
-* @function recurseReveal checks surrounding boxes
-* @function endGameLose checks losing condition
-*/
-function reveal(i, j) {
-  console.log("Reveal called at: " + i + " and " + j + " ; ");
-  if( gameBoard[i][j].boom == 0 && !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-    gameBoard[i][j].revealed = true
-    recurseReveal(i, j)
-  } else if( gameBoard[i][j].boom == -1 && !gameBoard[i][j].flagged ) {
-    gameBoard[i][j].revealed = true
-    endGameLose()
-  } else if (!gameBoard[i][j].flagged) {
-    gameBoard[i][j].revealed = true
-  }
-}
-
-/**Recursion function to check surrounding boxes for bombs
-* @param {number} curI row of gameBoard
-* @param {number} curJ column of gameBoard
-* @function reveal checks the next bomb in the recursion
-*/
-function recurseReveal( curI, curJ ) {
-  if( gameBoard[curI][curJ].boom == 0 ) {
-    for( let i = -1; i <= 1; i++ ) {
-      for( let j = -1; j <= 1; j++ ) {
-        let newI = curI + i
-        let newJ = curJ + j
-        if (newI >= 0 && newI < rows) {
-          if (newJ >= 0 && newJ < cols) {
-            reveal(newI, newJ)
-          }
-        }
-      }
-    }
-  }
 }

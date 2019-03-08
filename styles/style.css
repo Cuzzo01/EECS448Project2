@@ -44,7 +44,7 @@ label {
   color: rgb(255, 255, 255);
 }
 
-#board {
+#boardDiv {
   display: block;
   padding: 10px;
 }
@@ -58,4 +58,19 @@ button {
   text-align: center;
   font-size: 16px;
   margin: 20px auto;
+}
+
+.box {
+  width: 19px;
+  height: 19px;
+  margin: 0px;
+  display: inline-block;
+  background-color: rgb(107, 220, 254);
+  border-radius: 5px;
+}
+#board {
+  display: grid;
+  justify-content: center;
+  grid-gap: 1px;
+
 }
