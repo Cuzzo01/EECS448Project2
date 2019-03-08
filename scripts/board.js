@@ -82,17 +82,22 @@ function setup() {
 /** Allows user to press mouse left button to reveal a Box
 * @function mouseReleased is called when the mouseButton has been unclicked
 */
-function mouseReleased(i,j) {
+function mouseDown(i, j, e) {
   // row should be y-related, col x-related. doesn't work that way rn
   // This switch statement changes controls to use left and right mouse buttons,
   // no more button pressing
+  e = e || window.event;
+  let mouseButton;
+  if ("which" in e)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+      mouseButton = e.which;
+  console.log(e.which);
   switch( mouseButton ) {
-    case LEFT:
+    case 1:
       gameBoard[i][j].reveal();
       checkWinConditions();
       break;
-    case RIGHT:
-      toggleFlag( row, col );
+    case 3:
+      gameBoard[i][j].toggleFlag();
       break;
     default:
       break;
@@ -118,7 +123,7 @@ function endGameWin() {
     for( let i = 0; i < rows; i++ ) {
       for( let j = 0; j < cols; j++ ) {
         if( !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-          reveal( i, j );
+          gameBoard[i][j].reveal();
         }
       }
     }
@@ -135,7 +140,7 @@ function endGameLose() {
     for ( let i = 0; i < rows; i++ ) {
       for ( let j = 0; j < cols; j++ ) {
         if ( !gameBoard[i][j].revealed ) {
-          reveal(i, j)
+          gameBoard[i][j].reveal();
         }
       }
     }
