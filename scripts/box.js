@@ -66,12 +66,6 @@ class Box {
 /**Places a flag to indicate there is a bomb in the box
 *@function endGameWin checks win condition
 */
-function flagBox(i, j) {
-  gameBoard[i][j].flagged = true
-}
-
-/**Removes a flag
-*/
-function unFlagBox(i, j) {
-  gameBoard[i][j].flagged = false
+function toggleFlag(row, col) {
+  gameBoard[row][col].flagged = !gameBoard[row][col].flagged;
 }
