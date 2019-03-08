@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
   <head>
     <meta charset = "UTF-8">
     <meta name= "viewport" content ="width=device-width, initial-scale=1.0">
@@ -10,59 +11,83 @@
   </head>
   <body>
     <h1>Minesweeper</h1>
-
     <p>Welcome to test group don't ignore's MineSweeper!</p>
     <p>Pick a number for your game board size (max = 30), and the number of bombs that will be placed.</p>
     <p>Click on Setup Game to get started. </p>
 
+    <!--
+      Replace with a CSS implementation
+    -->
     <script>
       //Scripted in the HTML given this is the only accesory function in JS
-      function toggle_rules(id) {
-        var div = document.getElementById(id);
-
-        if(div.style.display == 'none'){
-         div.style.display = 'block';
-        }
-        else{
+      function toggle_rules( id ) {
+        var div = document.getElementById( id );
+        if( div.style.display == 'none' ) {
+          div.style.display = 'block';
+        } else {
           div.style.display = 'none';
         }
       }
     </script>
 
-      <button onclick="toggle_rules('rules')">Rules</button>
-      <div style="display: none;"id = "rules">
-        <p>Your objective is to flag all the bombs on your board.</p>
-        <p>You can click on any square to reveal a bomb or number.</p>
-        <p>If a bomb is revealed you suck and lose the game.</p>
-        <p>If a number is revealed the number indicates how many possible bombs there are around that square.</p>
-        <p>You must flag all bombs to win the game.</p>
-      </div>
-      <button onclick="toggle_rules('controls')">Controls</button>
-      <div style="display: none;"id = "controls">
-        <p>Left mouse button will reveal the current square you are hovering.</p>
-        <p>Spacebar will place/remove a flag on the current square.</p>
-        <p>Good luck and don't suck!</p>
-      </div>
+    <!--
+      Turn the rules/controls into lists not <p>s
+      -->
 
-    <form onsubmit = "return setup()">
+    <button onclick="toggle_rules('rules')">Rules</button>
+    <div style="display: none;"id = "rules">
+      <p>Your objective is to isolate all the mines on your board.</p>
+      <p>You can click on any square to reveal a mine or number.</p>
+      <p>If a mine is revealed you lose the game.</p>
+      <p>If a number is revealed the number indicates how many mines there are around that square.</p>
+      <p>You must reveal all non-mine squares to win.</p>
+    </div>
+    <button onclick="toggle_rules('controls')">Controls</button>
+    <div style="display: none;"id = "controls">
+      <p>Left mouse button will reveal the square you are hovering over.</p>
+      <p>Right mouse button will flag the square you are hovering over.</p>
+      <p>Good luck and don't suck!</p>
+    </div>
 
-        <p>Size:</p>
-        <p>Rows:</p>
-        <input class="border-gradient" type = "number" min = "2" max = "30" id="Rows" value="10"></input>
-        <p>Columns:</p>
-        <input class="border-gradient" type = "number" min = "2" max = "30" id="Cols" value="10"></input>
-        <p>Bombs:</p>
-        <input class="border-gradient" type = "number" min = "1" max = rows*cols-1 id="input2" value="5"><br>
+      <!--
+        Input for game setup.
+        Gameplan:
+        [x] Remove form tag
+        [x] Add separate row/col inputs
+        [ ] Add event handlers on row/col inputs to update mine count input max
+          :     onblur="myFunc()"                            HTML Attribute
+          :     myElement.addEventListener("blur", myFunc);  JS DOM method
+        [ ] Test row/col/mineCount pairs, figure out what tests to run
+        [x] Change <p> tags to <label>s for the input fields, to conform w/ standard semantiics
+      -->
+    <label for="rowCount">Row count:</label>
+    <input class="border-gradient setupInput" id="rowCount"
+           onblur="updateInputFields()"
+           type="number" min="2" max="30" value="10">
 
-        <button type="submit">Setup Game</button>
-    </form>
+    <label for="colCount">Col count:</label>
+    <input class="border-gradient setupInput" id="colCount"
+           onblur="updateInputFields()"
+           type="number" min="2" max="30" value="10">
 
-    <div align = "center" id = "board"></div>
+    <label for="bombCount">Mine count:</label>
+    <input class="border-gradient setupInput" id="bombCount"
+           onblur="updateInputFields()"
+           type="number" min="1" max="99" value="5"><br>
 
+    <button onclick="setup()">Setup Game</button>
+
+    <div align="center" id="board"></div>
+
+    <!--
+      Plan: we need to figure out the best way to introduce our script files
+        inside <head> or <body>?
+        optimize the format?
+        what method do we use to attach event handlers?
+    -->
     <!--End call to JS Scripts-->
     <script src="libraries/p5.js"></script>
     <script src="scripts/board.js"></script>
     <script src="scripts/box.js"></script>
-
   </body>
 </html>
