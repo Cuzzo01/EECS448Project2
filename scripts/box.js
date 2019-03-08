@@ -12,7 +12,7 @@ class Box {
     this.div = document.createElement('div');
     this.div.classList.add('box');
     this.div.style.gridArea = [(i+1).toString(),(j+1).toString(), 'span 1', 'span 1'].join(' / ') ;
-    this.div.setAttribute('onclick','mouseReleased('+i+','+j+')');
+    this.div.setAttribute('onmousedown','mouseDown('+i+','+j+',event)');
     this.i = i;
     this.j = j;
     this.w = w
@@ -35,7 +35,16 @@ class Box {
   reveal() {
     console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
     this.revealed = true;
-    this.div.innerHTML = this.boom;
+    if(this.flagged)
+      this.toggleFlag();
+    if(this.boom == -1) {
+      this.div.classList.add("revealedMine");
+    }
+    else{
+      this.div.classList.add("revealed");
+      if(this.boom != 0)
+        this.div.innerHTML = this.boom;
+    }
     if( this.boom == 0 && !this.flagged ) {
       this.recurseReveal();
     } else if( this.boom == -1 && !this.flagged ) {
@@ -62,10 +71,12 @@ class Box {
       }
     }
   }
-}
-/**Places a flag to indicate there is a bomb in the box
-*@function endGameWin checks win condition
-*/
-function toggleFlag(row, col) {
-  gameBoard[row][col].flagged = !gameBoard[row][col].flagged;
+
+  /**Places a flag to indicate there is a bomb in the box
+  *@function endGameWin checks win condition
+  */
+  toggleFlag() {
+    this.flagged = !this.flagged;
+    this.div.classList.toggle("flagged");
+  }
 }
