@@ -64,7 +64,7 @@ class Box {
         let newJ = this.j + j
         if (newI >= 0 && newI < gameBoard.length) {
           if (newJ >= 0 && newJ < gameBoard[newI].length) {
-            if(!gameBoard[newI][newJ].revealed)
+            if(!gameBoard[newI][newJ].revealed && !gameBoard[newI][newJ].flagged)
               gameBoard[newI][newJ].reveal();
           }
         }
