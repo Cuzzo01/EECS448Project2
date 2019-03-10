@@ -173,12 +173,11 @@ function draw() {//clear the tile, then redraw
     background(50, 50, 70);
     for (let i = 0; i<rows; i++) {
         for (let j=0; j<cols; j++) {
-            gameBoard[i][j];//.draw();
-            setBackground();
+            gameBoard[i][j].draw();
+            //setBackground();
             console.log("test");
         }
     }
-  }
 }
 
 /**Creates the numbers for the logic of the game board
