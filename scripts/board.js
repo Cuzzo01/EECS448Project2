@@ -8,7 +8,44 @@
 
 var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
+let runAwayMode = false;
+let globalEvent;
 var cnv, width, height;
+
+function toggleRunAwayMode() {
+  runAwayMode = !runAwayMode;
+  let interval;
+  if(runAwayMode){
+    let runAwayText = document.createElement('div');
+    runAwayText.id = 'runAwayText';
+    runAwayText.innerHTML = 'Run Away Mode Enabled!';
+    document.body.appendChild(runAwayText);
+    interval = setInterval(function(){
+      for(let i=0;i<rows;i++){
+        for(let j=0;j<cols;j++){
+            if(gameBoard[i][j].boom == -1){
+              gameBoard[i][j].runAway(globalEvent);
+            }
+          }
+      }
+    }, 100);
+  }
+  else{
+    document.body.removeChild(document.getElementById('runAwayText'));
+    clearInterval(interval);
+  }
+  for(let i=0;i<rows;i++){
+    for(let j=0;j<cols;j++){
+        if(gameBoard[i][j].boom == -1)
+          if(runAwayMode){
+            gameBoard[i][j].generateBufferBox();
+          }
+          else{
+            gameBoard[i][j].deleteBufferBox();
+          }
+    }
+  }
+}
 
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
@@ -61,6 +98,19 @@ function setup() {
     }
   }
   document.getElementById('boardDiv').appendChild(board);
+  document.body.onmousemove = function(e)
+  {
+    globalEvent = e;
+    if(runAwayMode){
+      for(let i=0;i<rows;i++){
+        for(let j=0;j<cols;j++){
+            if(gameBoard[i][j].boom == -1){
+              gameBoard[i][j].runAway(globalEvent);
+              }
+            }
+        }
+      }
+  };
   //initBoom
   while( mineCount != 0 ) {
     var randX = Math.floor( Math.random() * rows );
@@ -86,11 +136,12 @@ function mouseDown(i, j, e) {
   // row should be y-related, col x-related. doesn't work that way rn
   // This switch statement changes controls to use left and right mouse buttons,
   // no more button pressing
+  if(e.target !== e.currentTarget)
+    return;
   e = e || window.event;
   let mouseButton;
   if ("which" in e)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
       mouseButton = e.which;
-  console.log(e.which);
   switch( mouseButton ) {
     case 1:
       gameBoard[i][j].reveal();

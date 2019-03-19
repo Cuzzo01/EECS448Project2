@@ -17,13 +17,69 @@ class Box {
     this.j = j;
     this.w = w
     this.boom = 0
-    this.revealed = false
-    this.flagged = false
+    this.revealed = false;
+    this.flagged = false;
+    this.bufferBox = null;
+    this.origin = null;
   }
 
 
   attach(board) {
     board.appendChild(this.div);
+  }
+  generateBufferBox() {
+    this.div.classList.add('mine');
+    let rect = this.div.getBoundingClientRect();
+    this.origin = [(rect.left+10), (rect.top+10)];
+    this.bufferBox = document.createElement('div');
+    this.bufferBox.setAttribute("data-originX", rect.left + window.pageXOffset);
+    this.bufferBox.setAttribute("data-originY", rect.top + window.pageYOffset);
+    this.bufferBox.classList.add('bufferBox');
+    document.body.appendChild(this.div);
+    this.div.style.position = 'absolute';
+    this.div.style.top = this.bufferBox.getAttribute('data-originY') + 'px';
+    this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px'
+    this.div.appendChild(this.bufferBox);
+  }
+  deleteBufferBox() {
+    this.div.classList.remove('mine');
+    this.div.removeChild(this.bufferBox);
+    document.getElementById('board').appendChild(this.div);
+    this.div.style.position = 'relative';
+    this.div.style.transition = 'all 0s';
+    this.div.style.top = '0px';
+    this.div.style.left = '0px'
+    this.bufferBox = null;
+  }
+
+  runAway(e) {
+    let rect = this.div.getBoundingClientRect();
+    let left = rect.left + window.pageXOffset;
+    let top = rect.top + window.pageYOffset;
+    let xpos = e.pageX;
+    let ypos = e.pageY;
+    let distanceFromOrigin = Math.sqrt(Math.pow(left-this.bufferBox.getAttribute('data-originX'),2) + Math.pow(top-this.bufferBox.getAttribute('data-originY'),2));
+    let redValue = clamp((distanceFromOrigin-15)/15,0,1)*148;
+    this.div.style.backgroundColor = `rgba(${redValue+107},${220-redValue},${254-redValue})`;
+    let direction = [(left+10) - xpos, (top+10) - ypos];
+    let magnitude = Math.sqrt(Math.pow(direction[0],2) + Math.pow(direction[1],2));
+    if(magnitude<=22){
+      direction = [direction[0]/magnitude,direction[1]/magnitude];
+      let amplitude = 1/magnitude;
+      if(amplitude<0.046)
+        amplitude = 0;
+      let newPosition = [left +  amplitude * 30 * direction[0], top +  amplitude * 30 * direction[1]];
+      this.div.style.transition = 'all 0s';
+      this.div.style.left = newPosition[0] + 'px';
+      this.div.style.top = newPosition[1] + 'px';
+      return true;
+    }
+    else{
+      this.div.style.transition = 'all 1s';
+      this.div.style.top = this.bufferBox.getAttribute('data-originY') + 'px';
+      this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px';
+      return false;
+    }
   }
 
   /**Checks surrounding boxes for bombs and reveals them if they are not
@@ -79,4 +135,7 @@ class Box {
     this.flagged = !this.flagged;
     this.div.classList.toggle("flagged");
   }
+}
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
 }
