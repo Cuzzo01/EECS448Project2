@@ -2,10 +2,6 @@
  * @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
  */
 
-/*
- * we have to encapsulate this into a class.. this is all imperative
- */
-
 var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
 var cnv, width, height;
@@ -32,16 +28,6 @@ function setup() {
   [ width, height ] = [ rows * w + 1,                                 // Get width/height in px
                         cols * w + 1 ];
 
-  /*
-   * From p5.js online docs
-   * createCanvas() should be called on line one of setup
-   * and setup is directly called by p5.js which then leads
-   * to putting draw() in a loop. I think we should use
-   * setup() to instantiate the canvas element itself per p5.js
-   * instructions, and move the above input handling code to its own
-   * method. loop() noLoop() can be used to start and stop rendering
-   * and redraw() lets us draw only once when necessary
-   */
   if (document.contains(document.getElementById('board'))) {
     document.getElementById('board').remove();
   }
@@ -52,9 +38,6 @@ function setup() {
   gameBoard = build2DArray(rows, cols);
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < cols; j++) {
-      /* later we can avoid needing to pass the width parameter (w) by
-       *    by rendering the boxes in whatever holds the canvas element
-       */
       let tempBox = new Box(i, j, w, 0);
       tempBox.attach(board);
       gameBoard[i][j] = tempBox;
@@ -188,14 +171,14 @@ function getCenterCount( x , y ) {
     [ x + 1, y - 1 ],
     [ x + 1, y     ],
     [ x + 1, y + 1 ],
-  ]
-  var count = 0
+  ];
+  var count = 0;
   for(var i = 0 ; i < position.length ; i++) {
-    var row = position[i][0]
-    var col = position[i][1]
+    var row = position[i][0];
+    var col = position[i][1];
     if( gameBoard[ row ] != undefined && gameBoard[ row ][ col ] != undefined ) {
       count += (gameBoard[ row ][ col ].boom == -1);
     }
   }
-  return count
+  return count;
 }
