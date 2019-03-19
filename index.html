@@ -2,14 +2,16 @@
 
 <html lang="en">
   <head>
-    <meta charset = "UTF-8">
-    <meta name= "viewport" content ="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content ="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Minesweeper</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <script src="scripts/box.js" defer></script>
+    <script src="scripts/board.js" defer></script>
   </head>
-  <body>
+  <body onload="setup()">
     <h1>Minesweeper</h1>
     <p>Welcome to test group don't ignore's MineSweeper!</p>
     <p>Pick a number for your game board size (max = 30), and the number of bombs that will be placed.</p>
@@ -35,7 +37,7 @@
       -->
 
     <button onclick="toggle_rules('rules')">Rules</button>
-    <div style="display: none;"id = "rules">
+    <div style="display: none;" id="rules">
       <p>Your objective is to isolate all the mines on your board.</p>
       <p>You can click on any square to reveal a mine or number.</p>
       <p>If a mine is revealed you lose the game.</p>
@@ -43,23 +45,12 @@
       <p>You must reveal all non-mine squares to win.</p>
     </div>
     <button onclick="toggle_rules('controls')">Controls</button>
-    <div style="display: none;"id = "controls">
+    <div style="display: none;" id="controls">
       <p>Left mouse button will reveal the square you are hovering over.</p>
       <p>Right mouse button will flag the square you are hovering over.</p>
       <p>Good luck and don't suck!</p>
     </div>
 
-      <!--
-        Input for game setup.
-        Gameplan:
-        [x] Remove form tag
-        [x] Add separate row/col inputs
-        [ ] Add event handlers on row/col inputs to update mine count input max
-          :     onblur="myFunc()"                            HTML Attribute
-          :     myElement.addEventListener("blur", myFunc);  JS DOM method
-        [ ] Test row/col/mineCount pairs, figure out what tests to run
-        [x] Change <p> tags to <label>s for the input fields, to conform w/ standard semantiics
-      -->
     <label for="rowCount">Row count:</label>
     <input class="border-gradient setupInput" id="rowCount"
            onblur="updateInputFields()"
@@ -76,18 +67,9 @@
            type="number" min="1" max="99" value="5"><br>
 
     <button onclick="setup()">Setup Game</button>
+    <button onclick="toggleCheatBoard()">Cheat Mode</button>
     <button onclick="toggleRunAwayMode()">Run Away Mode</button>
-    <div align="center" id="boardDiv"></div>
 
-    <!--
-      Plan: we need to figure out the best way to introduce our script files
-        inside <head> or <body>?
-        optimize the format?
-        what method do we use to attach event handlers?
-    -->
-    <!--End call to JS Scripts-->
-    <script src="libraries/p5.js"></script>
-    <script src="scripts/board.js"></script>
-    <script src="scripts/box.js"></script>
+    <div align="center" id="boardDiv"></div>
   </body>
 </html>
