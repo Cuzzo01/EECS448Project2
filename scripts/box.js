@@ -19,11 +19,34 @@ class Box {
     this.boom = 0
     this.revealed = false
     this.flagged = false
+    this.cheat = false
   }
-
 
   attach(board) {
     board.appendChild(this.div);
+  }
+
+  toggleCheat() {
+    this.cheat = !this.cheat;
+    if (this.cheat) {
+      if(this.boom == -1) {
+        this.div.classList.add("revealedMine");
+      } else {
+        this.div.classList.add("revealed");
+        if(this.boom != 0)
+          this.div.innerHTML = this.boom;
+      }
+    } else {
+      if(this.boom == -1) {
+        this.div.classList.toggle("revealedMine");
+      } else {
+        if (!this.revealed) {
+          this.div.classList.toggle("revealed");
+          if(this.boom != 0)
+            this.div.innerHTML = "";
+        }
+      }
+    }
   }
 
   /**Checks surrounding boxes for bombs and reveals them if they are not
@@ -33,24 +56,23 @@ class Box {
   * @function endGameLose checks losing condition
   */
   reveal() {
-    console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
+    // console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
     this.revealed = true;
-    if(this.flagged)
+    if(this.flagged) {
       this.toggleFlag();
+    }
     if(this.boom == -1) {
       this.div.classList.add("revealedMine");
-    }
-    else{
+    } else {
       this.div.classList.add("revealed");
       if(this.boom != 0)
         this.div.innerHTML = this.boom;
     }
-    if( this.boom == 0 && !this.flagged ) {
+    if(this.boom == 0 && !this.flagged) {
       this.recurseReveal();
-    } else if( this.boom == -1 && !this.flagged ) {
+    } else if(this.boom == -1 && !this.flagged) {
       endGameLose();
     }
-
   }
   /**Recursion function to check surrounding boxes for bombs
   * @param {number} curI row of gameBoard
