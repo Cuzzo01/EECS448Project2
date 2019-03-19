@@ -65,7 +65,7 @@ class Box {
     let xpos = e.pageX;
     let ypos = e.pageY;
     let distanceFromOrigin = Math.sqrt(Math.pow(left-this.bufferBox.getAttribute('data-originX'),2) + Math.pow(top-this.bufferBox.getAttribute('data-originY'),2));
-    let redValue = clamp((distanceFromOrigin-15)/15,0,1)*148;
+    let redValue = clamp((distanceFromOrigin)/20,0,1)*148;
     this.div.style.backgroundColor = `rgba(${redValue+107},${220-redValue},${254-redValue})`;
     let direction = [(left+10) - xpos, (top+10) - ypos];
     let magnitude = Math.sqrt(Math.pow(direction[0],2) + Math.pow(direction[1],2));
