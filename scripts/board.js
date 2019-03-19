@@ -42,10 +42,12 @@ function setup() {
    * method. loop() noLoop() can be used to start and stop rendering
    * and redraw() lets us draw only once when necessary
    */
-  var cnv = createCanvas(width, height);  // look at p5.js reference material
-  cnv.parent('board');
-  cnv.elt.addEventListener( "contextmenu", (evt) => evt.preventDefault() );
-  background(0);
+  if (document.contains(document.getElementById('board'))) {
+    document.getElementById('board').remove();
+  }
+  let board = document.createElement('div');
+  board.id = 'board';
+  board.addEventListener( "contextmenu", (evt) => evt.preventDefault() );
   endGameCheck = false;
   gameBoard = build2DArray(rows, cols);
   for (var i = 0; i < rows; i++) {
@@ -53,9 +55,12 @@ function setup() {
       /* later we can avoid needing to pass the width parameter (w) by
        *    by rendering the boxes in whatever holds the canvas element
        */
-      gameBoard[i][j] = new Box(i * w, j * w, w, 0);
+      let tempBox = new Box(i, j, w, 0);
+      tempBox.attach(board);
+      gameBoard[i][j] = tempBox;
     }
   }
+  document.getElementById('boardDiv').appendChild(board);
   //initBoom
   while( mineCount != 0 ) {
     var randX = Math.floor( Math.random() * rows );
@@ -72,35 +77,31 @@ function setup() {
       gameBoard[i][j].boom = gameBoard[i][j].boom ? -1 : getCenterCount( i, j );
     }
   }
-  draw();
-  noLoop();
 }
 
 /** Allows user to press mouse left button to reveal a Box
 * @function mouseReleased is called when the mouseButton has been unclicked
 */
-function mouseReleased() {
+function mouseDown(i, j, e) {
   // row should be y-related, col x-related. doesn't work that way rn
-  var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
-  if( row < 0 || row >= rows || col < 0 || col >= cols ) {
-    return;
-  }
   // This switch statement changes controls to use left and right mouse buttons,
   // no more button pressing
+  e = e || window.event;
+  let mouseButton;
+  if ("which" in e)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+      mouseButton = e.which;
+  console.log(e.which);
   switch( mouseButton ) {
-    case LEFT:
-      reveal( row, col );
+    case 1:
+      gameBoard[i][j].reveal();
       checkWinConditions();
       break;
-    case RIGHT:
-      toggleFlag( row, col );
+    case 3:
+      gameBoard[i][j].toggleFlag();
       break;
     default:
       break;
   }
-
-  // Call the p5.js renderer to redraw the canvas
-  redraw();
 }
 
 function checkWinConditions() {
@@ -122,7 +123,7 @@ function endGameWin() {
     for( let i = 0; i < rows; i++ ) {
       for( let j = 0; j < cols; j++ ) {
         if( !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-          reveal( i, j );
+          gameBoard[i][j].reveal();
         }
       }
     }
@@ -139,7 +140,7 @@ function endGameLose() {
     for ( let i = 0; i < rows; i++ ) {
       for ( let j = 0; j < cols; j++ ) {
         if ( !gameBoard[i][j].revealed ) {
-          reveal(i, j)
+          gameBoard[i][j].reveal();
         }
       }
     }
@@ -148,30 +149,18 @@ function endGameLose() {
 }
 
 /** Builds a 2D Array
-* @param {number} rows recieved from user
-* @param {number} cols recieved from user
-* @param returns the built array
-*/
-function build2DArray (rows, cols)  {
-  var array = new Array(rows);                // the wiley end-of-line semi-colon can be found here
-  for (var i = 0; i < array.length; i++) {
-    array[i] = new Array(cols)
+  * @param {number} rows recieved from user
+  * @param {number} cols recieved from user
+  * @param returns the built array
+  */
+function build2DArray (rows, cols){
+  let arr = [];//changed how this array was being initialized --Cameron--
+  for (let i = 0; i < rows; i++) {//changed vars to lets --Cameron--
+    arr.push([]);//changed how a new column is added at the row index --Cameron--
   }
-  return array
+  return arr;
 }
 
-/**Presents the visuals in a user friendly away
-*@function draw creates visuals
-*/
-function draw() {
-  // optimize by only redrawing as needed? maybe? currently this redraws the entire board
-  background( 50, 50, 70 )
-  for( var i = 0; i < rows; i++ ) {
-    for( var j = 0; j < cols; j++ ) {
-      gameBoard[i][j].draw()
-    }
-  }
-}
 
 /**Creates the numbers for the logic of the game board
 * @function getCenterCount checks surrounding boxes for bombs and displays how many near it
