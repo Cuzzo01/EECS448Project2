@@ -20,6 +20,7 @@ class Box {
     this.revealed = false
     this.flagged = false
     this.bufferBox = null;
+    this.tempBox = null;
     this.origin = null;
     this.cheat = false
   }
@@ -36,6 +37,10 @@ class Box {
     this.bufferBox.setAttribute("data-originY", rect.top + window.pageYOffset);
     this.bufferBox.classList.add('bufferBox');
     document.body.appendChild(this.div);
+    this.tempBox = document.createElement('div');
+    this.tempBox.classList.add('tempBox');
+    this.tempBox.style.gridArea = [(this.i+1).toString(),(this.j+1).toString(), 'span 1', 'span 1'].join(' / ') ;
+    document.getElementById('board').appendChild(this.tempBox);
     this.div.style.position = 'absolute';
     this.div.style.top = this.bufferBox.getAttribute('data-originY') + 'px';
     this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px'
@@ -45,6 +50,7 @@ class Box {
     this.div.classList.remove('mine');
     this.div.removeChild(this.bufferBox);
     document.getElementById('board').appendChild(this.div);
+    document.getElementById('board').removeChild(this.tempBox);
     this.div.style.position = 'relative';
     this.div.style.transition = 'all 0s';
     this.div.style.top = '0px';

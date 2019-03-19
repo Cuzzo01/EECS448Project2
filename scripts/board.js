@@ -5,12 +5,12 @@
 var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
 let runAwayMode = false;
+let interval;
 let globalEvent;
 var cnv, width, height;
 
 function toggleRunAwayMode() {
   runAwayMode = !runAwayMode;
-  let interval;
   if(runAwayMode){
     let runAwayText = document.createElement('div');
     runAwayText.id = 'runAwayText';
@@ -59,6 +59,8 @@ function updateInputFields() {
  *@returns game board array
 */
 function setup() {
+  if(runAwayMode)
+    toggleRunAwayMode();
   var inputs = Array.from(document.getElementsByClassName("setupInput")); // Input elements
   if( inputs.some( (x) => !x.reportValidity() ) ) { return; }             // Stop if invalid
   [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );   // Assign variables
