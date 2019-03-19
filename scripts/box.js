@@ -51,10 +51,12 @@ class Box {
     this.div.removeChild(this.bufferBox);
     document.getElementById('board').appendChild(this.div);
     document.getElementById('board').removeChild(this.tempBox);
-    this.div.style.position = 'relative';
-    this.div.style.transition = 'all 0s';
-    this.div.style.top = '0px';
-    this.div.style.left = '0px'
+    this.div.style.backgroundColor = null;
+    this.div.style.borderBottom = null;
+    this.div.style.position = null;
+    this.div.style.transition = null;
+    this.div.style.top = null;
+    this.div.style.left = null;
     this.bufferBox = null;
   }
 
@@ -66,7 +68,10 @@ class Box {
     let ypos = e.pageY;
     let distanceFromOrigin = Math.sqrt(Math.pow(left-this.bufferBox.getAttribute('data-originX'),2) + Math.pow(top-this.bufferBox.getAttribute('data-originY'),2));
     let redValue = clamp((distanceFromOrigin)/20,0,1)*148;
-    this.div.style.backgroundColor = `rgba(${redValue+107},${220-redValue},${254-redValue})`;
+    if(!this.flagged)
+      this.div.style.backgroundColor = `rgb(${redValue+107},${220-redValue},${254-redValue})`;
+    else
+      this.div.style.borderBottom = `18px inset rgb(${redValue+107},${220-redValue},${254-redValue})`;
     let direction = [(left+10) - xpos, (top+10) - ypos];
     let magnitude = Math.sqrt(Math.pow(direction[0],2) + Math.pow(direction[1],2));
     if(magnitude<=22){
