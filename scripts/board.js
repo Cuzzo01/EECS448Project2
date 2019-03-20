@@ -2,13 +2,46 @@
  * @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
  */
 
-/*
- * we have to encapsulate this into a class.. this is all imperative
- */
-
 var w = 20;
 var gameBoard, rows, cols, mineCount, endGameCheck;
+let runAwayMode = false;
+let interval;
+let globalEvent;
 var cnv, width, height;
+
+function toggleRunAwayMode() {
+  runAwayMode = !runAwayMode;
+  if(runAwayMode){
+    let runAwayText = document.createElement('div');
+    runAwayText.id = 'runAwayText';
+    runAwayText.innerHTML = 'Run Away Mode Enabled!';
+    document.body.appendChild(runAwayText);
+    interval = setInterval(function(){
+      for(let i=0;i<rows;i++){
+        for(let j=0;j<cols;j++){
+            if(gameBoard[i][j].boom == -1){
+              gameBoard[i][j].runAway(globalEvent);
+            }
+          }
+      }
+    }, 100);
+  }
+  else{
+    document.body.removeChild(document.getElementById('runAwayText'));
+    clearInterval(interval);
+  }
+  for(let i=0;i<rows;i++){
+    for(let j=0;j<cols;j++){
+        if(gameBoard[i][j].boom == -1)
+          if(runAwayMode){
+            gameBoard[i][j].generateBufferBox();
+          }
+          else{
+            gameBoard[i][j].deleteBufferBox();
+          }
+    }
+  }
+}
 
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
@@ -26,36 +59,43 @@ function updateInputFields() {
  *@returns game board array
 */
 function setup() {
+  if(runAwayMode)
+    toggleRunAwayMode();
   var inputs = Array.from(document.getElementsByClassName("setupInput")); // Input elements
   if( inputs.some( (x) => !x.reportValidity() ) ) { return; }             // Stop if invalid
   [ rows, cols, mineCount ] = inputs.map( (x) => Number(x.value) );   // Assign variables
   [ width, height ] = [ rows * w + 1,                                 // Get width/height in px
                         cols * w + 1 ];
 
-  /*
-   * From p5.js online docs
-   * createCanvas() should be called on line one of setup
-   * and setup is directly called by p5.js which then leads
-   * to putting draw() in a loop. I think we should use
-   * setup() to instantiate the canvas element itself per p5.js
-   * instructions, and move the above input handling code to its own
-   * method. loop() noLoop() can be used to start and stop rendering
-   * and redraw() lets us draw only once when necessary
-   */
-  var cnv = createCanvas(width, height);  // look at p5.js reference material
-  cnv.parent('board');
-  cnv.elt.addEventListener( "contextmenu", (evt) => evt.preventDefault() );
-  background(0);
+  if (document.contains(document.getElementById('board'))) {
+    document.getElementById('board').remove();
+  }
+  let board = document.createElement('div');
+  board.id = 'board';
+  board.addEventListener( "contextmenu", (evt) => evt.preventDefault() );
   endGameCheck = false;
   gameBoard = build2DArray(rows, cols);
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < cols; j++) {
-      /* later we can avoid needing to pass the width parameter (w) by
-       *    by rendering the boxes in whatever holds the canvas element
-       */
-      gameBoard[i][j] = new Box(i * w, j * w, w, 0);
+      let tempBox = new Box(i, j, w, 0);
+      tempBox.attach(board);
+      gameBoard[i][j] = tempBox;
     }
   }
+  document.getElementById('boardDiv').appendChild(board);
+  document.body.onmousemove = function(e)
+  {
+    globalEvent = e;
+    if(runAwayMode){
+      for(let i=0;i<rows;i++){
+        for(let j=0;j<cols;j++){
+            if(gameBoard[i][j].boom == -1){
+              gameBoard[i][j].runAway(globalEvent);
+              }
+            }
+        }
+      }
+  };
   //initBoom
   while( mineCount != 0 ) {
     var randX = Math.floor( Math.random() * rows );
@@ -72,36 +112,32 @@ function setup() {
       gameBoard[i][j].boom = gameBoard[i][j].boom ? -1 : getCenterCount( i, j );
     }
   }
-  draw();
-  noLoop();
 }
 
 /** Allows user to press mouse left button to reveal a Box
 * @function mouseReleased is called when the mouseButton has been unclicked
 */
-function mouseReleased() {
+function mouseDown(i, j, e) {
   // row should be y-related, col x-related. doesn't work that way rn
-  var [ row, col ] = [ mouseX, mouseY ].map( (x) => Math.floor( x / w ) );
-  if( row < 0 || row >= rows || col < 0 || col >= cols ) {
-    return;
-  }
   // This switch statement changes controls to use left and right mouse buttons,
   // no more button pressing
+  if(e.target !== e.currentTarget)
+    return;
+  e = e || window.event;
+  let mouseButton;
+  if ("which" in e)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+      mouseButton = e.which;
   switch( mouseButton ) {
-    case LEFT:
-      reveal( row, col );
+    case 1:
+      gameBoard[i][j].reveal();
       checkWinConditions();
       break;
-    case RIGHT:
-      toggleFlag( row, col );
+    case 3:
+      gameBoard[i][j].toggleFlag();
       break;
     default:
       break;
   }
-
-  // Call the p5.js renderer to redraw the canvas
-  //pass row, col to redraw AND to draw
-  redraw();
 }
 
 function checkWinConditions() {
@@ -123,11 +159,19 @@ function endGameWin() {
     for( let i = 0; i < rows; i++ ) {
       for( let j = 0; j < cols; j++ ) {
         if( !gameBoard[i][j].revealed && !gameBoard[i][j].flagged ) {
-          reveal( i, j );
+          gameBoard[i][j].reveal();
         }
       }
     }
     alert("Mines successfully swept");  // I removed the timeout. The time out allows the board to finish rerendering the board.
+  }
+}
+
+function toggleCheatBoard() {
+  for ( let i = 0; i < rows; i++ ) {
+    for ( let j = 0; j < cols; j++ ) {
+      gameBoard[i][j].toggleCheat();
+    }
   }
 }
 
@@ -140,7 +184,7 @@ function endGameLose() {
     for ( let i = 0; i < rows; i++ ) {
       for ( let j = 0; j < cols; j++ ) {
         if ( !gameBoard[i][j].revealed ) {
-          reveal(i, j)
+          gameBoard[i][j].reveal();
         }
       }
     }
@@ -161,24 +205,6 @@ function build2DArray (rows, cols){
   return arr;
 }
 
-/**Presents the visuals in a user friendly away
-  *@function draw creates visuals
-  */
-
-function setBackground() { //created separate function for this so that draw()
-  background(0, 0, 0);   //doesnt loop unnecessarily --Cameron--
-}
-
-function draw() {//clear the tile, then redraw
-    background(50, 50, 70);
-    for (let i = 0; i<rows; i++) {
-        for (let j=0; j<cols; j++) {
-            gameBoard[i][j].draw();
-            //setBackground();
-            console.log("test");
-        }
-    }
-}
 
 /**Creates the numbers for the logic of the game board
 * @function getCenterCount checks surrounding boxes for bombs and displays how many near it
@@ -198,14 +224,14 @@ function getCenterCount( x , y ) {
     [ x + 1, y - 1 ],
     [ x + 1, y     ],
     [ x + 1, y + 1 ],
-  ]
-  var count = 0
+  ];
+  var count = 0;
   for(var i = 0 ; i < position.length ; i++) {
-    var row = position[i][0]
-    var col = position[i][1]
+    var row = position[i][0];
+    var col = position[i][1];
     if( gameBoard[ row ] != undefined && gameBoard[ row ][ col ] != undefined ) {
       count += (gameBoard[ row ][ col ].boom == -1);
     }
   }
-  return count
+  return count;
 }

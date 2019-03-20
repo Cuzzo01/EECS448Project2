@@ -8,96 +8,167 @@
 
 // only the draw function is internal to the Box
 class Box {
-  constructor(x, y, w, boom) {
-    this.x = x
-    this.y = y
+  constructor(i, j, w, boom) {
+    this.div = document.createElement('div');
+    this.div.classList.add('box');
+    this.div.style.gridArea = [(i+1).toString(),(j+1).toString(), 'span 1', 'span 1'].join(' / ') ;
+    this.div.setAttribute('onmousedown','mouseDown('+i+','+j+',event)');
+    this.i = i;
+    this.j = j;
     this.w = w
     this.boom = 0
     this.revealed = false
     this.flagged = false
+    this.bufferBox = null;
+    this.tempBox = null;
+    this.origin = null;
+    this.cheat = false
   }
 
-  /*  draw() method, so there's a setInterval( ) somewhere that calls this regularly
-   *  we don't need a /framerate/ just an update whenever something /happens/
-   */
-  draw () {
-    stroke(50, 50, 70)
-    if(this.revealed && this.boom == -1) {
-      fill(255, 255, 255)
-      stroke(255, 255, 255)
-      circle(this.x+10,this.y+10, 3);
-      //text(this.boom, this.x+this.w*.25, this.y+this.w*.75)
-    } else if(this.revealed && this.boom != -1) {
-      fill(216, 186, 255)
-      stroke(216, 186, 255)
-      if (this.boom > 0) {
-        text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-      }
-    } else if (this.flagged) {
-      fill(107, 220, 254)
-      triangle(this.x+5, this.y+15, this.x+10, this.y, this.x+15, this.y+15)
-    } else {
-      fill(107, 220, 254)
-      //text(this.boom,this.x+this.w*.25, this.y+this.w*.75)
-      rect(this.x,this.y,19,this.w,6)
+  attach(board) {
+    board.appendChild(this.div);
+  }
+  generateBufferBox() {
+    this.div.classList.add('mine');
+    let rect = this.div.getBoundingClientRect();
+    this.origin = [(rect.left+10), (rect.top+10)];
+    this.bufferBox = document.createElement('div');
+    this.bufferBox.setAttribute("data-originX", rect.left + window.pageXOffset);
+    this.bufferBox.setAttribute("data-originY", rect.top + window.pageYOffset);
+    this.bufferBox.classList.add('bufferBox');
+    document.body.appendChild(this.div);
+    this.tempBox = document.createElement('div');
+    this.tempBox.classList.add('tempBox');
+    this.tempBox.style.gridArea = [(this.i+1).toString(),(this.j+1).toString(), 'span 1', 'span 1'].join(' / ') ;
+    document.getElementById('board').appendChild(this.tempBox);
+    this.div.style.position = 'absolute';
+    this.div.style.top = this.bufferBox.getAttribute('data-originY') + 'px';
+    this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px'
+    this.div.appendChild(this.bufferBox);
+  }
+  deleteBufferBox() {
+    this.div.classList.remove('mine');
+    this.div.removeChild(this.bufferBox);
+    document.getElementById('board').appendChild(this.div);
+    document.getElementById('board').removeChild(this.tempBox);
+    this.div.style.backgroundColor = null;
+    this.div.style.borderBottom = null;
+    this.div.style.position = null;
+    this.div.style.transition = null;
+    this.div.style.top = null;
+    this.div.style.left = null;
+    this.bufferBox = null;
+  }
+
+  runAway(e) {
+    let rect = this.div.getBoundingClientRect();
+    let left = rect.left + window.pageXOffset;
+    let top = rect.top + window.pageYOffset;
+    let xpos = e.pageX;
+    let ypos = e.pageY;
+    let distanceFromOrigin = Math.sqrt(Math.pow(left-this.bufferBox.getAttribute('data-originX'),2) + Math.pow(top-this.bufferBox.getAttribute('data-originY'),2));
+    let redValue = clamp((distanceFromOrigin)/20,0,1)*148;
+    if(!this.flagged)
+      this.div.style.backgroundColor = `rgb(${redValue+107},${220-redValue},${254-redValue})`;
+    else
+      this.div.style.borderBottom = `18px inset rgb(${redValue+107},${220-redValue},${254-redValue})`;
+    let direction = [(left+10) - xpos, (top+10) - ypos];
+    let magnitude = Math.sqrt(Math.pow(direction[0],2) + Math.pow(direction[1],2));
+    if(magnitude<=22){
+      direction = [direction[0]/magnitude,direction[1]/magnitude];
+      let amplitude = 1/magnitude;
+      if(amplitude<0.046)
+        amplitude = 0;
+      let newPosition = [left +  amplitude * 30 * direction[0], top +  amplitude * 30 * direction[1]];
+      this.div.style.transition = 'all 0s';
+      this.div.style.left = newPosition[0] + 'px';
+      this.div.style.top = newPosition[1] + 'px';
+      return true;
+    }
+    else{
+      this.div.style.transition = 'all 1s';
+      this.div.style.top = this.bufferBox.getAttribute('data-originY') + 'px';
+      this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px';
+      return false;
     }
   }
-}
 
-/**Places a flag to indicate there is a bomb in the box
-*@function endGameWin checks win condition
-*/
-function toggleFlag(row, col) {
-  gameBoard[row][col].flagged = !gameBoard[row][col].flagged;
-}
-
-/**Checks surrounding boxes for bombs and reveals them if they are not
-* @param {number} i row of gameBoard
-* @param {number} j column of gameBoard
-* @function recurseReveal checks surrounding boxes
-* @function endGameLose checks losing condition
-*/
-function reveal(row, col) {
-  // Case: Square is a bomb
-    // If flagged, do we ignore or prompt a lose condition?
-    // Else prompt lose condition.
-  // Case: Square is not a bomb
-  //   Case
-  //
-  if( gameBoard[row][col].revealed ) { return; }
-
-  switch( gameBoard[row][col].boom ) {
-    case -1:
-      gameBoard[row][col].revealed = true;
-      endGameLose();
-      break;
-    case 0:
-      gameBoard[row][col].revealed = true;
-      recurseReveal(row, col);
-      break;
-    default:
-      gameBoard[row][col].revealed = true;
-      break;
+  toggleCheat() {
+    this.cheat = !this.cheat;
+    if (this.cheat) {
+      if(this.boom == -1) {
+        this.div.classList.add("revealedMine");
+      } else {
+        this.div.classList.add("revealed");
+        if(this.boom != 0)
+          this.div.innerHTML = this.boom;
+      }
+    } else {
+      if(this.boom == -1) {
+        this.div.classList.toggle("revealedMine");
+      } else {
+        if (!this.revealed) {
+          this.div.classList.toggle("revealed");
+          if(this.boom != 0)
+            this.div.innerHTML = "";
+        }
+      }
+    }
   }
-}
 
-/**Recursion function to check surrounding boxes for bombs
-* @param {number} curI row of gameBoard
-* @param {number} curJ column of gameBoard
-* @function reveal checks the next bomb in the recursion
-*/
-function recurseReveal( curI, curJ ) {
-  if( gameBoard[curI][curJ].boom == 0 ) {
+  /**Checks surrounding boxes for bombs and reveals them if they are not
+  * @param {number} i row of gameBoard
+  * @param {number} j column of gameBoard
+  * @function recurseReveal checks surrounding boxes
+  * @function endGameLose checks losing condition
+  */
+  reveal() {
+    // console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
+    this.revealed = true;
+    if(this.flagged) {
+      this.toggleFlag();
+    }
+    if(this.boom == -1) {
+      this.div.classList.add("revealedMine");
+    } else {
+      this.div.classList.add("revealed");
+      if(this.boom != 0)
+        this.div.innerHTML = this.boom;
+    }
+    if(this.boom == 0 && !this.flagged) {
+      this.recurseReveal();
+    } else if(this.boom == -1 && !this.flagged) {
+      endGameLose();
+    }
+  }
+  /**Recursion function to check surrounding boxes for bombs
+  * @param {number} curI row of gameBoard
+  * @param {number} curJ column of gameBoard
+  * @function reveal checks the next bomb in the recursion
+  */
+  recurseReveal() {
     for( let i = -1; i <= 1; i++ ) {
       for( let j = -1; j <= 1; j++ ) {
-        let newI = curI + i
-        let newJ = curJ + j
-        if (newI >= 0 && newI < rows) {
-          if (newJ >= 0 && newJ < cols) {
-            reveal(newI, newJ)
+        let newI = this.i + i
+        let newJ = this.j + j
+        if (newI >= 0 && newI < gameBoard.length) {
+          if (newJ >= 0 && newJ < gameBoard[newI].length) {
+            if(!gameBoard[newI][newJ].revealed && !gameBoard[newI][newJ].flagged)
+              gameBoard[newI][newJ].reveal();
           }
         }
       }
     }
   }
+
+  /**Places a flag to indicate there is a bomb in the box
+  *@function endGameWin checks win condition
+  */
+  toggleFlag() {
+    this.flagged = !this.flagged;
+    this.div.classList.toggle("flagged");
+  }
+}
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
 }

@@ -44,7 +44,7 @@ label {
   color: rgb(255, 255, 255);
 }
 
-#board {
+#boardDiv {
   display: block;
   padding: 10px;
 }
@@ -58,4 +58,69 @@ button {
   text-align: center;
   font-size: 16px;
   margin: 20px auto;
+}
+
+.box {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+  width: 19px;
+  height: 19px;
+  margin: 0px;
+  display: inline-block;
+  background-color: rgb(107, 220, 254);
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0px;
+}
+#board {
+  display: grid;
+  position: relative;
+  z-index: 10;
+  justify-content: center;
+  grid-gap: 1px;
+
+}
+.revealed {
+  background-color: rgba(0,0,0,0);
+}
+.flagged {
+  border-left: 9px inset transparent;
+  border-right: 9px inset transparent;
+  border-bottom: 18px inset rgb(107, 220, 254);
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 0px;
+}
+.revealedMine {
+  border-radius: 9px;
+  background-color: rgb(107, 220, 254);
+}
+.mine {
+}
+.bufferBox {
+  position: absolute;
+  z-index: -1;
+  background-color: rgba(0,0,0,0);
+  height: 19px;
+  width: 19px;
+}
+.tempBox {
+  box-sizing: border-box;
+  position: relative;
+  width: 19px;
+  height: 19px;
+  margin: 0px;
+  display: inline-block;
+  background-color: rgb(0, 0, 0, 0);
+  border-radius: 5px
+  padding: 0px;
+}
+#runAwayText {
+  text-align: center;
+  font-size: 16px;
+  line-height: 2em;
+  letter-spacing: 1px;
+  color: rgb(255, 255, 255);
 }
