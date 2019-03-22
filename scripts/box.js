@@ -4,9 +4,6 @@
 
 /**
 * Class representing a box that may or may not contain a mine or flag
-* @name Box
-* @constructor
-* @classdesc Class representing a box that may or may not contain a mine or flag
 */
 class Box {
   /**
@@ -33,7 +30,7 @@ class Box {
   }
 
   /**
-  * @method attach
+  * attach
   * @param {HTMLElement} Board an HTML element that will become the parent for this Box
   */
   attach(board) {
@@ -41,7 +38,7 @@ class Box {
   }
 
   /**
-  * @method generateBufferBox create a buffer box on mine tiles for runAwayMode
+  * generateBufferBox create a buffer box on mine tiles for runAwayMode
   */
   generateBufferBox() {
     this.div.classList.add('mine');
@@ -63,7 +60,7 @@ class Box {
   }
 
   /**
-   * @function deleteBufferBox removes the DOM element for the box used to handle runAwayMode
+   * deleteBufferBox removes the DOM element for the box used to handle runAwayMode
    */
   deleteBufferBox() {
     this.div.classList.remove('mine');
@@ -80,7 +77,7 @@ class Box {
   }
 
   /**
-   * @function runAway event handler to update Box positions and color in runAway mode.
+   * event handler to update Box positions and color in runAway mode.
    * @param {GlobalEvent} Event passed by callback to obtain mouse position for calculations
    */
   runAway(e) {
@@ -117,7 +114,7 @@ class Box {
   }
 
   /**
-   * @function toggleCheat Change 'cheat' state, and handle DOM manipulation to update rendering
+   * toggleCheat Change 'cheat' state, and handle DOM manipulation to update rendering
    */
   toggleCheat() {
     this.cheat = !this.cheat;
@@ -143,7 +140,7 @@ class Box {
   }
 
   /**Changes Box to the Revealed state
-    @function reveal Uncovers Box. If Box is a mine, trigger game end. If box
+    reveal Uncovers Box. If Box is a mine, trigger game end. If box
         has proximity count of 0, trigger recursion.
     */
   reveal() {
@@ -166,7 +163,7 @@ class Box {
   }
 
   /**Recursive reveal call
-  * @function reveal calls reveal on all surrounding boxes
+  * reveal calls reveal on all surrounding boxes
   */
   recurseReveal() {
     for( let i = -1; i <= 1; i++ ) {
@@ -184,7 +181,7 @@ class Box {
   }
 
   /**Place or remove a flag
-  *@function endGameWin changes the flag state of the Box
+  * endGameWin changes the flag state of the Box
   */
   toggleFlag() {
     this.flagged = !this.flagged;

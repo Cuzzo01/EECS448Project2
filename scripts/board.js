@@ -126,7 +126,6 @@ function setup() {
 }
 
 /** Function callback for handling mouse clicks
-  * @function mouseDown Callback for mouse events
   * @param {number} row of the clicked box
   * @param {number} col of the clicked box
   * @param {Event} Event the event object passed to this callback
