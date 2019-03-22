@@ -1,13 +1,20 @@
-/** @fileOverview This class describes boxes and the definitions of their traits
-  * @author Kevin Dinh, Eric Seals, Eric D. Fan, Evan Trout
-  * @constructor
-  * @property boom boolean to decide if the box is a bomb
-  * @property revealed boolean to decide if the box has been revealed
-  * @property flagged boolean to decided if the box has a flag
-  */
+/** @fileOverview Contains the class definition for the Boxes
+* @author Cameron Kientz, Grady Wright, Ian Hierl, Nick Marcuzzo
+*/
 
-// only the draw function is internal to the Box
+/**
+* Class representing a box that may or may not contain a mine or flag
+* @name Box
+* @constructor
+* @classdesc Class representing a box that may or may not contain a mine or flag
+*/
 class Box {
+  /**
+  * @param  {number} i - The row index for the Box
+  * @param  {number} j - The col index for the Box
+  * @param  {number} w - The pixel width of the Div element used to display the Box
+  * @param  {number} boom - Value that is -1 is there is a mine, or 0 - 8 depending on surrounding tiles
+  */
   constructor(i, j, w, boom) {
     this.div = document.createElement('div');
     this.div.classList.add('box');
@@ -25,9 +32,17 @@ class Box {
     this.cheat = false
   }
 
+  /**
+  * @method attach
+  * @param {HTMLElement} Board an HTML element that will become the parent for this Box
+  */
   attach(board) {
     board.appendChild(this.div);
   }
+
+  /**
+  * @method generateBufferBox create a buffer box on mine tiles for runAwayMode
+  */
   generateBufferBox() {
     this.div.classList.add('mine');
     let rect = this.div.getBoundingClientRect();
@@ -46,6 +61,10 @@ class Box {
     this.div.style.left = this.bufferBox.getAttribute('data-originX') + 'px'
     this.div.appendChild(this.bufferBox);
   }
+
+  /**
+   * @function deleteBufferBox removes the DOM element for the box used to handle runAwayMode
+   */
   deleteBufferBox() {
     this.div.classList.remove('mine');
     this.div.removeChild(this.bufferBox);
@@ -60,6 +79,10 @@ class Box {
     this.bufferBox = null;
   }
 
+  /**
+   * @function runAway event handler to update Box positions and color in runAway mode.
+   * @param {GlobalEvent} Event passed by callback to obtain mouse position for calculations
+   */
   runAway(e) {
     let rect = this.div.getBoundingClientRect();
     let left = rect.left + window.pageXOffset;
@@ -93,6 +116,9 @@ class Box {
     }
   }
 
+  /**
+   * @function toggleCheat Change 'cheat' state, and handle DOM manipulation to update rendering
+   */
   toggleCheat() {
     this.cheat = !this.cheat;
     if (this.cheat) {
@@ -116,14 +142,11 @@ class Box {
     }
   }
 
-  /**Checks surrounding boxes for bombs and reveals them if they are not
-  * @param {number} i row of gameBoard
-  * @param {number} j column of gameBoard
-  * @function recurseReveal checks surrounding boxes
-  * @function endGameLose checks losing condition
-  */
+  /**Changes Box to the Revealed state
+    @function reveal Uncovers Box. If Box is a mine, trigger game end. If box
+        has proximity count of 0, trigger recursion.
+    */
   reveal() {
-    // console.log("Reveal called at: " + this.i + " and " + this.j + " ; ");
     this.revealed = true;
     if(this.flagged) {
       this.toggleFlag();
@@ -141,10 +164,9 @@ class Box {
       endGameLose();
     }
   }
-  /**Recursion function to check surrounding boxes for bombs
-  * @param {number} curI row of gameBoard
-  * @param {number} curJ column of gameBoard
-  * @function reveal checks the next bomb in the recursion
+
+  /**Recursive reveal call
+  * @function reveal calls reveal on all surrounding boxes
   */
   recurseReveal() {
     for( let i = -1; i <= 1; i++ ) {
@@ -161,8 +183,8 @@ class Box {
     }
   }
 
-  /**Places a flag to indicate there is a bomb in the box
-  *@function endGameWin checks win condition
+  /**Place or remove a flag
+  *@function endGameWin changes the flag state of the Box
   */
   toggleFlag() {
     this.flagged = !this.flagged;
