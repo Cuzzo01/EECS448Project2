@@ -39,6 +39,6 @@ MarkDown files for our project's retrospective write-up are located at:
 * [Unimplemented Features](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/additionalFeatures.md)
 * [Retrospective for Future Projects](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/Retrospective.md)
 
-## documentation
-[index.html](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/index.html)
+## Documentation
+Open documentation/index.html for documentation
 
