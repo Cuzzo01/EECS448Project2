@@ -1,14 +1,26 @@
-/** @fileOverview This class creates the game board and functions interacting with it
- * @author Kevin Dinh, Eric Seals, Eric D. Fan Ye, Evan Trout
+/** @fileOverview This script file contains input handling and managing the
+ * overall game board which is stored as a global variable.
+ * @author Cameron Kientz, Grady Wright, Ian Hierl, Nick Marcuzzo
  */
 
 var w = 20;
-var gameBoard, rows, cols, mineCount, endGameCheck;
+/** @type {Box[][]} */
+var gameBoard;
+/** @type {number} */
+var rows, cols, mineCount, endGameCheck;
+/** @type {bool} */
 let runAwayMode = false;
 let interval;
 let globalEvent;
+/** @type {number} */
 var cnv, width, height;
 
+/**Toggles global boolean runAwayMode, and depending on its new value start a
+  * looped interval that fires a runAway() event from each Box object every 100 ms
+  * A reference to this interval is saved as global variable "interval".
+  * if runAwayMode is now true. if false, it clears the global interval.
+  * @returns Nothing
+  */
 function toggleRunAwayMode() {
   runAwayMode = !runAwayMode;
   if(runAwayMode){
@@ -43,6 +55,9 @@ function toggleRunAwayMode() {
   }
 }
 
+/**Updates the maximum attribute of the mineCount input based on the rowCount
+* and colCount values. Fires on blur event from number inputs.
+*/
 function updateInputFields() {
   var inputs = Array.from(document.getElementsByClassName("setupInput"));
   var [ rowCount, colCount, mineCount ] = inputs.map( (x) => Number(x.value) );
@@ -50,13 +65,9 @@ function updateInputFields() {
   inputs[2].max = String( rowCount * colCount - 1 );
 }
 
-/**Creates a canvas of the game board and displays it onto the webpage
- *@param {number} rows input from user to create the board
- *@param {number} totalBoom input from user for how many bombs
- *@function createCanvas makes a visual friendly layout
- *@function setTimeout stops runtime of code
- *@function alert prompts dialogue box
- *@returns game board array
+/**Takes input from HTML to construct a 2D array of Box objects along with their
+* related div HTML tag.
+* @returns Nothing
 */
 function setup() {
   if(runAwayMode)
@@ -114,8 +125,11 @@ function setup() {
   }
 }
 
-/** Allows user to press mouse left button to reveal a Box
-* @function mouseReleased is called when the mouseButton has been unclicked
+/** Function callback for handling mouse clicks
+  * @param {number} row of the clicked box
+  * @param {number} col of the clicked box
+  * @param {Event} Event the event object passed to this callback
+  * @returns Nothing
 */
 function mouseDown(i, j, e) {
   // row should be y-related, col x-related. doesn't work that way rn
@@ -140,6 +154,10 @@ function mouseDown(i, j, e) {
   }
 }
 
+/**
+  * Determines if the gameboard is in a valid win state
+  * @returns Nothing
+  */
 function checkWinConditions() {
   var gameWon = !gameBoard.some( ( row ) => {               // there are no rows such that
     return row.some( (cell) => {                                  // the row has no cell such that
@@ -151,8 +169,9 @@ function checkWinConditions() {
   }
 }
 
-/** Checks the conditions to prompt a win
-*/
+/** Reveal all tiles and send win message
+  * @returns Nothing
+  */
 function endGameWin() {
   if( endGameCheck == false ) {
     endGameCheck = true;
@@ -167,6 +186,10 @@ function endGameWin() {
   }
 }
 
+/** Toggles cheat mode. When active, all tiles are shown without altering their
+  * current state in the game, allowing player to resume play
+  * @returns Nothing
+  */
 function toggleCheatBoard() {
   for ( let i = 0; i < rows; i++ ) {
     for ( let j = 0; j < cols; j++ ) {
@@ -175,12 +198,12 @@ function toggleCheatBoard() {
   }
 }
 
-/** Checks the conditions to prompt a loss
-*/
+/** Reveal all covered Boxes and send loss message
+  * @returns Nothing
+  */
 function endGameLose() {
   if ( endGameCheck == false ) {
     endGameCheck = true;
-    console.log( endGameCheck );
     for ( let i = 0; i < rows; i++ ) {
       for ( let j = 0; j < cols; j++ ) {
         if ( !gameBoard[i][j].revealed ) {
@@ -195,7 +218,7 @@ function endGameLose() {
 /** Builds a 2D Array
   * @param {number} rows recieved from user
   * @param {number} cols recieved from user
-  * @param returns the built array
+  * @returns {array} an empty rows * cols array
   */
 function build2DArray (rows, cols){
   let arr = [];//changed how this array was being initialized --Cameron--
@@ -206,14 +229,13 @@ function build2DArray (rows, cols){
 }
 
 
-/**Creates the numbers for the logic of the game board
-* @function getCenterCount checks surrounding boxes for bombs and displays how many near it
-* @param {number} x row value of array
-* @param {number} y column value of array
-* @try adds the number to the board if it exists
-* @catch does nothing if it doesn't exist
-* @returns the value
-*/
+/**
+  * Returns the number of mines surrounding Box at (x, y)
+  * @function getCenterCount returns the number of mines surrounding a Box
+  * @param {number} x row index of Box
+  * @param {number} y column index of Box
+  * @returns the number of mines
+  */
 function getCenterCount( x , y ) {
   var position = [
     [ x - 1, y - 1 ],

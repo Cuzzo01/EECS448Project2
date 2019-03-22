@@ -34,7 +34,11 @@ This code is derived from:
 
 MarkDown files for our project's retrospective write-up are located at:
 * [List of Meetings](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/MeetingLog.md)
-* [(LINK TO BE ADDED) Division of Work/Responsibilities](#)
-* [(LINK TO BE ADDED) Challenges](#)
-* [(LINK TO BE ADDED) Unimplemented Features](#)
-* [(LINK TO BE ADDED) Retrospective for Future Projects](#)
+* [Division of Work/Responsibilities](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/workDelegation.md)
+* [Challenges](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/Challenges.md)
+* [Unimplemented Features](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/additionalFeatures.md)
+* [Retrospective for Future Projects](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/Retrospective.md)
+
+## documentation
+[index.html](https://github.com/Cuzzo01/EECS448Project2/blob/master/documentation/index.html)
+
